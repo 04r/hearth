@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearth — Listen Together</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #1a1410;
+    --surface:   #241d16;
+    --surface2:  #2e2318;
+    --surface3:  #3a2d20;
+    --border:    #4a3828;
+    --amber:     #e8a44a;
+    --amber-dim: #b07830;
+    --amber-glow:#f0c070;
+    --rose:      #c97060;
+    --green:     #78c878;
+    --text:      #f0e8dc;
+    --text-mid:  #b89878;
+    --text-dim:  #7a6050;
+    --radius:    12px;
+    --radius-lg: 20px;
+  }
+
+  html, body { height: 100%; background: var(--bg); color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; overflow: hidden; }
+
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 200px; pointer-events: none; z-index: 9999; opacity: 0.5;
+  }
+
+  .ambient { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; }
+  .ambient-1 { width: 500px; height: 400px; background: rgba(232,164,74,0.07); top: -100px; left: -100px; }
+  .ambient-2 { width: 400px; height: 300px; background: rgba(201,112,96,0.05); bottom: -80px; right: -80px; }
+
+  /* ── SCREENS ── */
+  .screen { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; align-items: center; justify-content: center; }
+  .screen.active { display: flex; }
+
+  /* ── LANDING ── */
+  .landing-inner {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 28px; max-width: 420px; width: 100%; padding: 0 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .logo-block { text-align: center; }
+  .logo-icon { font-size: 48px; line-height: 1; filter: drop-shadow(0 0 20px rgba(232,164,74,0.5)); animation: flicker 4s ease-in-out infinite; }
+  @keyframes flicker { 0%,100%{filter:drop-shadow(0 0 20px rgba(232,164,74,0.5))} 50%{filter:drop-shadow(0 0 30px rgba(240,192,112,0.7))} }
+  .logo-name { font-family: 'Lora', serif; font-size: 42px; font-weight: 600; letter-spacing: -0.5px; color: var(--amber-glow); line-height: 1.1; }
+  .logo-tag { font-size: 13px; color: var(--text-mid); letter-spacing: 0.08em; margin-top: 4px; font-weight: 300; }
+
+  .action-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 28px; width: 100%;
+    display: flex; flex-direction: column; gap: 10px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  }
+  .action-label { font-family: 'Lora', serif; font-size: 15px; font-weight: 500; color: var(--text-mid); margin-bottom: 2px; }
+
+  input[type="text"] {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 11px 14px; color: var(--text);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input[type="text"]::placeholder { color: var(--text-dim); }
+  input[type="text"]:focus { border-color: var(--amber-dim); box-shadow: 0 0 0 3px rgba(232,164,74,0.12); }
+
+  .btn { width: 100%; padding: 12px 20px; border: none; border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all 0.18s ease; letter-spacing: 0.02em; }
+  .btn-primary { background: linear-gradient(135deg, var(--amber) 0%, var(--amber-dim) 100%);
+    color: #1a1410; box-shadow: 0 4px 16px rgba(232,164,74,0.25); }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,164,74,0.35); filter: brightness(1.05); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-mid); }
+  .btn-ghost:hover { border-color: var(--amber-dim); color: var(--amber); background: rgba(232,164,74,0.06); }
+  .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .divider { display: flex; align-items: center; gap: 12px; color: var(--text-dim); font-size: 12px; margin: 4px 0; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .error-msg { font-size: 12px; color: var(--rose); text-align: center; min-height: 16px; }
+
+  /* ── CONNECTING overlay ── */
+  #connecting {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26,20,16,0.9);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+  }
+  #connecting.show { display: flex; }
+  .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .connecting-text { font-size: 14px; color: var(--text-mid); }
+
+  /* ── ROOM layout ── */
+  #room { display: none; flex-direction: row; align-items: stretch; padding: 0; }
+  #room.active { display: flex; }
+
+  .panel-left { width: 288px; min-width: 240px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; }
+
+  .room-header { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+  .room-header-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .room-name-display { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--amber-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(232,164,74,0.12); border: 1px solid rgba(232,164,74,0.2); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 500; color: var(--amber); white-space: nowrap; }
+  .badge .dot { width: 6px; height: 6px; background: var(--amber); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .room-id-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-dim); flex-wrap: wrap; }
+  .room-id-code { font-family: monospace; font-size: 12px; color: var(--text-mid); background: var(--surface2); border-radius: 4px; padding: 1px 7px; letter-spacing: 0.1em; }
+  .copy-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 11px; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; }
+  .copy-btn:hover { color: var(--amber); background: rgba(232,164,74,0.1); }
+
+  .section-label { padding: 12px 18px 5px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
+  .listeners-list { padding: 0 12px; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; max-height: 140px; }
+  .listener-item { display: flex; align-items: center; gap: 9px; padding: 6px 8px; border-radius: 8px; transition: background 0.15s; }
+  .listener-item:hover { background: var(--surface2); }
+  .avatar { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .listener-name { font-size: 13px; color: var(--text); }
+  .you-tag { font-size: 10px; color: var(--amber-dim); margin-left: 3px; font-weight: 500; }
+
+  .queue-area { display: flex; flex-direction: column; flex: 1; overflow: hidden; border-top: 1px solid var(--border); margin-top: 6px; }
+  .queue-list { flex: 1; overflow-y: auto; padding: 4px 8px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .queue-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+  .queue-item:hover { background: var(--surface2); }
+  .queue-item.now-playing { background: rgba(232,164,74,0.08); border: 1px solid rgba(232,164,74,0.15); }
+  .queue-thumb { width: 36px; height: 36px; border-radius: 6px; background: var(--surface3); flex-shrink: 0; overflow: hidden; }
+  .queue-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .queue-meta { flex: 1; min-width: 0; }
+  .queue-title { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .queue-artist { font-size: 11px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .now-icon { display: none; flex-shrink: 0; gap: 2px; align-items: flex-end; height: 14px; }
+  .queue-item.now-playing .now-icon { display: flex; }
+  .now-icon span { display: block; width: 3px; border-radius: 2px; background: var(--amber); animation: eq 1s ease-in-out infinite; }
+  .now-icon span:nth-child(1) { height: 8px; animation-delay: 0s; }
+  .now-icon span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
+  .now-icon span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
+  @keyframes eq { 0%,100%{transform:scaleY(0.4)} 50%{transform:scaleY(1)} }
+  .queue-remove { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 14px; padding: 4px; border-radius: 4px; opacity: 0; transition: all 0.15s; flex-shrink: 0; }
+  .queue-item:hover .queue-remove { opacity: 1; }
+  .queue-remove:hover { color: var(--rose); background: rgba(201,112,96,0.1); }
+  .empty-queue { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 28px 16px; text-align: center; color: var(--text-dim); }
+  .empty-queue .eq-icon { font-size: 26px; opacity: 0.4; }
+  .empty-queue p { font-size: 12px; line-height: 1.5; }
+
+  /* ── CENTER PANEL ── */
+  .panel-center { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
+
+  .player-area { border-bottom: 1px solid var(--border); padding: 20px 24px 16px; background: linear-gradient(180deg, var(--surface) 0%, transparent 100%); display: flex; flex-direction: column; gap: 14px; }
+  .now-playing-header { display: flex; align-items: center; gap: 14px; }
+  .np-art { width: 60px; height: 60px; border-radius: 10px; background: var(--surface2); flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.4); position: relative; }
+  .np-art img { width: 100%; height: 100%; object-fit: cover; }
+  .np-art-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--text-dim); }
+  .np-meta { flex: 1; min-width: 0; }
+  .np-title { font-family: 'Lora', serif; font-size: 19px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .np-artist { font-size: 12px; color: var(--text-mid); margin-top: 2px; }
+  .np-added { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
+
+  .progress-row { display: flex; align-items: center; gap: 10px; }
+  .time-label { font-size: 11px; color: var(--text-dim); min-width: 32px; font-variant-numeric: tabular-nums; }
+  .time-label.right { text-align: right; }
+  .progress-bar { flex: 1; height: 4px; background: var(--surface3); border-radius: 2px; cursor: pointer; position: relative; }
+  .progress-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--amber-dim), var(--amber)); pointer-events: none; position: relative; }
+  .progress-fill::after { content: ''; position: absolute; right: -5px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--amber-glow); box-shadow: 0 0 8px rgba(232,164,74,0.6); opacity: 0; transition: opacity 0.15s; }
+  .progress-bar:hover .progress-fill::after { opacity: 1; }
+
+  .controls-row { display: flex; align-items: center; gap: 6px; justify-content: center; }
+  .ctrl-btn { background: none; border: none; cursor: pointer; color: var(--text-mid); border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.15s; }
+  .ctrl-btn:hover { color: var(--text); background: var(--surface2); }
+  .ctrl-btn.play-pause { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--amber), var(--amber-dim)); color: #1a1410; font-size: 16px; box-shadow: 0 4px 16px rgba(232,164,74,0.3); }
+  .ctrl-btn.play-pause:hover { transform: scale(1.06); box-shadow: 0 6px 20px rgba(232,164,74,0.4); }
+
+  .volume-row { display: flex; align-items: center; gap: 8px; justify-content: center; }
+  .vol-icon { font-size: 13px; color: var(--text-dim); }
+  input[type="range"] { width: 90px; height: 4px; -webkit-appearance: none; appearance: none; background: var(--surface3); border-radius: 2px; cursor: pointer; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--amber); cursor: pointer; box-shadow: 0 0 6px rgba(232,164,74,0.4); }
+
+  /* SC hidden player */
+  .sc-player-wrap { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; top: -9999px; }
+
+  /* tabs */
+  .panel-center-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 18px; }
+  .tab-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; padding: 11px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--amber); border-bottom-color: var(--amber); }
+
+  .tab-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 14px 18px; }
+  .tab-panel.active { display: flex; }
+
+  .search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+  .search-bar input { flex: 1; }
+  .btn-sm { padding: 10px 14px; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+  .btn-sm.amber { background: linear-gradient(135deg, var(--amber), var(--amber-dim)); color: #1a1410; }
+  .btn-sm.amber:hover { filter: brightness(1.08); }
+
+  .search-results { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .result-item { display: flex; align-items: center; gap: 11px; padding: 9px 11px; border-radius: var(--radius); background: var(--surface2); border: 1px solid transparent; cursor: pointer; transition: all 0.15s; }
+  .result-item:hover { border-color: var(--border); background: var(--surface3); }
+  .result-art { width: 42px; height: 42px; border-radius: 7px; background: var(--surface3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-dim); }
+  .result-art img { width: 100%; height: 100%; object-fit: cover; }
+  .result-meta { flex: 1; min-width: 0; }
+  .result-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .result-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
+  .add-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; color: var(--text-mid); font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; font-family: 'DM Sans', sans-serif; }
+  .add-btn:hover { border-color: var(--amber-dim); color: var(--amber); background: rgba(232,164,74,0.08); }
+  .add-btn.added { border-color: rgba(120,200,120,0.4); color: var(--green); background: rgba(120,200,120,0.08); pointer-events: none; }
+
+  .hint-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+  .hint-box strong { color: var(--text-mid); }
+
+  .sc-url-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .url-status { font-size: 12px; color: var(--text-dim); min-height: 16px; }
+
+  /* chat */
+  .chat-messages { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .chat-msg { display: flex; gap: 8px; align-items: flex-start; }
+  .chat-avatar { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+  .chat-body { flex: 1; min-width: 0; }
+  .chat-meta { display: flex; align-items: baseline; gap: 6px; margin-bottom: 1px; }
+  .chat-name { font-size: 12px; font-weight: 500; color: var(--text-mid); }
+  .chat-time { font-size: 10px; color: var(--text-dim); }
+  .chat-text { font-size: 13px; color: var(--text); line-height: 1.5; word-break: break-word; }
+  .chat-system { text-align: center; font-size: 11px; color: var(--text-dim); padding: 2px 0; }
+  .chat-system span { background: var(--surface2); padding: 3px 10px; border-radius: 12px; }
+  .chat-input-row { display: flex; gap: 8px; margin-top: 10px; }
+  .chat-input-row input { flex: 1; }
+  .send-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0 14px; color: var(--text-mid); cursor: pointer; font-size: 16px; transition: all 0.15s; }
+  .send-btn:hover { border-color: var(--amber-dim); color: var(--amber); }
+
+  /* connection status bar */
+  .conn-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 6px 16px; font-size: 12px; text-align: center; display: none; transition: all 0.3s; }
+  .conn-bar.warn { display: block; background: rgba(232,164,74,0.15); color: var(--amber); border-bottom: 1px solid rgba(232,164,74,0.2); }
+  .conn-bar.error { display: block; background: rgba(201,112,96,0.15); color: var(--rose); border-bottom: 1px solid rgba(201,112,96,0.2); }
+
+  /* toast */
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 18px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .slide-in { animation: fadeUp 0.35s ease both; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<div class="conn-bar" id="conn-bar"></div>
+<div id="connecting"><div class="spinner"></div><div class="connecting-text" id="connecting-text">Connecting…</div></div>
+
+<!-- ═══ LANDING ═══ -->
+<div class="screen active" id="landing">
+  <div class="landing-inner">
+    <div class="logo-block">
+      <div class="logo-icon">🪵</div>
+      <div class="logo-name">Hearth</div>
+      <div class="logo-tag">listen together, anywhere</div>
+    </div>
+    <div class="action-card">
+      <div class="action-label">Create a room</div>
+      <input type="text" id="create-name" placeholder="Your name" maxlength="24" autocomplete="off">
+      <input type="text" id="create-room-name" placeholder="Room name (e.g. Sunday Vibes)" maxlength="32" autocomplete="off">
+      <button class="btn btn-primary" id="create-btn" onclick="createRoom()">Light the fire 🔥</button>
+      <div class="divider">or join existing</div>
+      <input type="text" id="join-name" placeholder="Your name" maxlength="24" autocomplete="off">
+      <input type="text" id="join-code" placeholder="Room code" maxlength="8" style="text-transform:uppercase;font-family:monospace;letter-spacing:0.1em;" autocomplete="off">
+      <button class="btn btn-ghost" id="join-btn" onclick="joinRoom()">Join room →</button>
+      <div class="error-msg" id="landing-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ROOM ═══ -->
+<div class="screen" id="room">
+  <div class="panel-left">
+    <div class="room-header">
+      <div class="room-header-top">
+        <span class="room-name-display" id="room-name-display"></span>
+        <span class="badge"><span class="dot"></span><span id="listener-count">1</span></span>
+      </div>
+      <div class="room-id-row">
+        Code: <span class="room-id-code" id="room-code-display"></span>
+        <button class="copy-btn" onclick="copyRoomLink()">⎘ copy link</button>
+      </div>
+    </div>
+    <div class="section-label">Listening now</div>
+    <div class="listeners-list" id="listeners-list"></div>
+    <div class="queue-area">
+      <div class="section-label">Queue</div>
+      <div class="queue-list" id="queue-list"></div>
+    </div>
+  </div>
+
+  <div class="panel-center">
+    <div class="player-area">
+      <div class="now-playing-header">
+        <div class="np-art" id="np-art">
+          <div class="np-art-placeholder" id="np-placeholder">🎵</div>
+          <img id="np-art-img" src="" alt="" style="display:none">
+        </div>
+        <div class="np-meta">
+          <div class="np-title" id="np-title">Nothing playing</div>
+          <div class="np-artist" id="np-artist">Add songs to start listening</div>
+          <div class="np-added" id="np-added"></div>
+        </div>
+      </div>
+      <div class="progress-row">
+        <span class="time-label" id="time-current">0:00</span>
+        <div class="progress-bar" id="progress-bar" onclick="handleSeek(event)">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <span class="time-label right" id="time-total">0:00</span>
+      </div>
+      <div class="controls-row">
+        <button class="ctrl-btn" onclick="send({type:'prev_track'})" title="Previous">⏮</button>
+        <button class="ctrl-btn play-pause" id="play-btn" onclick="send({type:'toggle_play'})">▶</button>
+        <button class="ctrl-btn" onclick="send({type:'next_track'})" title="Next">⏭</button>
+      </div>
+      <div class="volume-row">
+        <span class="vol-icon">🔈</span>
+        <input type="range" id="vol" min="0" max="100" value="80" oninput="setVol(this.value)">
+        <span class="vol-icon">🔊</span>
+      </div>
+    </div>
+
+    <!-- Hidden SC player -->
+    <div class="sc-player-wrap">
+      <iframe id="sc-iframe" allow="autoplay" src="about:blank" width="1" height="1"></iframe>
+    </div>
+
+    <div class="panel-center-body">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('search',this)">Search</button>
+        <button class="tab-btn" onclick="switchTab('url',this)">Add URL</button>
+        <button class="tab-btn" onclick="switchTab('chat',this)" id="chat-tab-btn">Chat</button>
+      </div>
+
+      <div class="tab-panel active" id="tab-search">
+        <div class="search-bar">
+          <input type="text" id="search-input" placeholder="Search SoundCloud…" onkeydown="if(event.key==='Enter')doSearch()">
+          <button class="btn-sm amber" onclick="doSearch()">Search</button>
+        </div>
+        <div class="search-results" id="search-results">
+          <div class="hint-box">
+            <strong>Search tip:</strong> Search works with a SoundCloud API key. If results don't load, use the <strong>Add URL</strong> tab — paste any SoundCloud track link and it'll fetch the title automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" id="tab-url">
+        <div style="margin-bottom:10px;color:var(--text-mid);font-size:13px;line-height:1.6;">
+          Paste any SoundCloud track or playlist URL to add it to the queue for everyone.
+        </div>
+        <div class="sc-url-row">
+          <input type="text" id="url-input" placeholder="https://soundcloud.com/artist/track" style="flex:1;" onkeydown="if(event.key==='Enter')addFromUrl()">
+          <button class="btn-sm amber" onclick="addFromUrl()">Add</button>
+        </div>
+        <div class="url-status" id="url-status"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-chat">
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Say something…" maxlength="200" onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="send-btn" onclick="sendChat()">↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<script>
+// ════════════════════════════════════════════════
+//  CONFIG
+// ════════════════════════════════════════════════
+const WS_URL = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host;
+
+// ════════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════════
+const S = {
+  ws: null,
+  myWsId: null,
+  myName: '',
+  myColor: '',
+  myEmoji: '',
+  roomCode: '',
+  roomName: '',
+  members: [],       // [{ wsId, name, color, emoji }]
+  queue: [],         // [{ id, url, title, artist, art, addedBy }]
+  playback: { currentIndex: -1, isPlaying: false, position: 0, startedAt: null },
+  scWidget: null,
+  scReady: false,
+  scCurrentUrl: null,
+  progressInterval: null,
+  reconnectTimer: null,
+  reconnectAttempts: 0,
+  pendingJoin: null,  // { type, ... } to replay on reconnect
+};
+
+// ════════════════════════════════════════════════
+//  UTILS
+// ════════════════════════════════════════════════
+function fmt(ms) {
+  if (!ms || ms < 0) return '0:00';
+  const s = Math.floor(ms / 1000);
+  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+}
+function toast(msg, dur = 2500) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), dur);
+}
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+function connBar(msg, type) {
+  const el = document.getElementById('conn-bar');
+  el.textContent = msg;
+  el.className = 'conn-bar ' + (type || '');
+}
+function hideConnBar() { document.getElementById('conn-bar').className = 'conn-bar'; }
+
+// ════════════════════════════════════════════════
+//  WEBSOCKET
+// ════════════════════════════════════════════════
+function connect(joinMsg) {
+  // Show loading
+  const ct = document.getElementById('connecting');
+  const ctText = document.getElementById('connecting-text');
+  ct.classList.add('show');
+  ctText.textContent = 'Connecting to Hearth…';
+
+  if (S.ws) {
+    S.ws.onclose = null;
+    S.ws.onerror = null;
+    try { S.ws.close(); } catch(e) {}
+    S.ws = null;
+  }
+
+  S.pendingJoin = joinMsg;
+  const ws = new WebSocket(WS_URL);
+  S.ws = ws;
+
+  ws.onopen = () => {
+    S.reconnectAttempts = 0;
+    hideConnBar();
+    ws.send(JSON.stringify(joinMsg));
+  };
+
+  ws.onmessage = (e) => {
+    let msg;
+    try { msg = JSON.parse(e.data); } catch { return; }
+    handleServerMsg(msg);
+  };
+
+  ws.onclose = (ev) => {
+    if (S.roomCode) {
+      scheduleReconnect();
+    }
+  };
+
+  ws.onerror = () => {
+    // onclose will fire after
+  };
+
+  // Keepalive ping every 25s
+  ws._pingInterval = setInterval(() => {
+    if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'ping' }));
+  }, 25000);
+}
+
+function scheduleReconnect() {
+  if (S.reconnectTimer) return;
+  S.reconnectAttempts++;
+  const delay = Math.min(1000 * Math.pow(1.5, S.reconnectAttempts - 1), 8000);
+  connBar(`Connection lost. Reconnecting in ${Math.round(delay/1000)}s…`, 'warn');
+  S.reconnectTimer = setTimeout(() => {
+    S.reconnectTimer = null;
+    connBar('Reconnecting…', 'warn');
+    connect(S.pendingJoin);
+  }, delay);
+}
+
+function send(msg) {
+  if (S.ws && S.ws.readyState === WebSocket.OPEN) {
+    S.ws.send(JSON.stringify(msg));
+  }
+}
+
+// ════════════════════════════════════════════════
+//  SERVER MESSAGE HANDLER
+// ════════════════════════════════════════════════
+function handleServerMsg(msg) {
+  const ct = document.getElementById('connecting');
+
+  switch (msg.type) {
+
+    case 'room_snapshot': {
+      ct.classList.remove('show');
+      hideConnBar();
+      S.myWsId   = msg.yourWsId;
+      S.myColor  = msg.yourColor;
+      S.myEmoji  = msg.yourEmoji;
+      S.roomCode = msg.roomCode;
+      S.roomName = msg.roomName;
+      S.members  = msg.members;
+      S.queue    = msg.queue;
+
+      document.getElementById('landing').classList.remove('active');
+      document.getElementById('room').classList.add('active');
+
+      renderRoomHeader();
+      renderMembers();
+      renderQueue();
+      applyPlayback(msg.playback, true);
+      setupSC();
+      break;
+    }
+
+    case 'member_joined': {
+      if (!S.members.find(m => m.wsId === msg.member.wsId)) {
+        S.members.push(msg.member);
+        renderMembers();
+      }
+      break;
+    }
+
+    case 'member_left': {
+      S.members = S.members.filter(m => m.wsId !== msg.wsId);
+      renderMembers();
+      break;
+    }
+
+    case 'queue_add': {
+      S.queue.push(msg.item);
+      renderQueue();
+      if (S.myWsId !== msg.item._adderWsId) {
+        toast(`${msg.item.addedBy} added "${msg.item.title}"`);
+      }
+      break;
+    }
+
+    case 'queue_remove': {
+      S.queue = S.queue.filter(i => i.id !== msg.itemId);
+      renderQueue();
+      break;
+    }
+
+    case 'playback_update': {
+      applyPlayback(msg.playback, false);
+      break;
+    }
+
+    case 'chat': {
+      addChatMsg(msg);
+      break;
+    }
+
+    case 'chat_system': {
+      addSystemMsg(msg.text);
+      break;
+    }
+
+    case 'error': {
+      ct.classList.remove('show');
+      document.getElementById('landing-error').textContent = msg.message;
+      document.getElementById('create-btn').disabled = false;
+      document.getElementById('join-btn').disabled = false;
+      break;
+    }
+
+    case 'pong': break;
+  }
+}
+
+// ════════════════════════════════════════════════
+//  LANDING
+// ════════════════════════════════════════════════
+function createRoom() {
+  const name = document.getElementById('create-name').value.trim();
+  const rname = document.getElementById('create-room-name').value.trim();
+  document.getElementById('landing-error').textContent = '';
+  if (!name) { document.getElementById('landing-error').textContent = 'Enter your name'; return; }
+  if (!rname) { document.getElementById('landing-error').textContent = 'Give the room a name'; return; }
+  S.myName = name;
+  document.getElementById('create-btn').disabled = true;
+  connect({ type: 'join', userName: name, roomName: rname });
+}
+
+function joinRoom() {
+  const name = document.getElementById('join-name').value.trim();
+  const code = document.getElementById('join-code').value.trim().toUpperCase();
+  document.getElementById('landing-error').textContent = '';
+  if (!name) { document.getElementById('landing-error').textContent = 'Enter your name'; return; }
+  if (code.length < 4) { document.getElementById('landing-error').textContent = 'Enter a valid room code'; return; }
+  S.myName = name;
+  document.getElementById('join-btn').disabled = true;
+  connect({ type: 'join', userName: name, roomCode: code });
+}
+
+// ════════════════════════════════════════════════
+//  ROOM HEADER
+// ════════════════════════════════════════════════
+function renderRoomHeader() {
+  document.getElementById('room-name-display').textContent = S.roomName;
+  document.getElementById('room-code-display').textContent = S.roomCode;
+  document.getElementById('listener-count').textContent = S.members.length;
+}
+
+function copyRoomLink() {
+  const url = `${location.origin}${location.pathname}?room=${S.roomCode}`;
+  navigator.clipboard.writeText(url).then(() => toast('Room link copied! Share it with friends 🔗'));
+}
+
+// ════════════════════════════════════════════════
+//  MEMBERS
+// ════════════════════════════════════════════════
+function renderMembers() {
+  document.getElementById('listener-count').textContent = S.members.length;
+  document.getElementById('listeners-list').innerHTML = S.members.map(m => `
+    <div class="listener-item">
+      <div class="avatar" style="background:${m.color}22;color:${m.color}">${m.emoji}</div>
+      <span class="listener-name">${m.name}${m.wsId === S.myWsId ? '<span class="you-tag">you</span>' : ''}</span>
+    </div>`).join('');
+}
+
+// ════════════════════════════════════════════════
+//  QUEUE
+// ════════════════════════════════════════════════
+function renderQueue() {
+  const el = document.getElementById('queue-list');
+  if (S.queue.length === 0) {
+    el.innerHTML = `<div class="empty-queue"><div class="eq-icon">🎵</div><p>Queue is empty.<br>Search or paste a URL to add songs.</p></div>`;
+    updateNowPlayingUI(null);
+    return;
+  }
+  el.innerHTML = S.queue.map((item, i) => `
+    <div class="queue-item ${i === S.playback.currentIndex ? 'now-playing' : ''}" onclick="send({type:'play_index',index:${i}})">
+      <div class="queue-thumb">${item.art ? `<img src="${item.art}" alt="">` : '🎵'}</div>
+      <div class="queue-meta">
+        <div class="queue-title">${escHtml(item.title)}</div>
+        <div class="queue-artist">${escHtml(item.artist)}</div>
+      </div>
+      <div class="now-icon"><span></span><span></span><span></span></div>
+      <button class="queue-remove" onclick="event.stopPropagation();send({type:'queue_remove',itemId:'${item.id}'})" title="Remove">✕</button>
+    </div>`).join('');
+
+  // Update now-playing info
+  const cur = S.queue[S.playback.currentIndex];
+  updateNowPlayingUI(cur || null);
+}
+
+function updateNowPlayingUI(item) {
+  const title = document.getElementById('np-title');
+  const artist = document.getElementById('np-artist');
+  const added = document.getElementById('np-added');
+  const img = document.getElementById('np-art-img');
+  const ph = document.getElementById('np-placeholder');
+  if (!item) {
+    title.textContent = 'Nothing playing';
+    artist.textContent = 'Add songs to start listening';
+    added.textContent = '';
+    img.style.display = 'none';
+    ph.style.display = '';
+    return;
+  }
+  title.textContent = item.title;
+  artist.textContent = item.artist;
+  added.textContent = item.addedBy ? `Added by ${item.addedBy}` : '';
+  if (item.art) { img.src = item.art; img.style.display = 'block'; ph.style.display = 'none'; }
+  else { img.style.display = 'none'; ph.style.display = ''; }
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ════════════════════════════════════════════════
+//  SOUNDCLOUD WIDGET
+// ════════════════════════════════════════════════
+function setupSC() {
+  const iframe = document.getElementById('sc-iframe');
+  // Load a silent placeholder first
+  iframe.src = 'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/soundcloud-shine&auto_play=false&hide_related=true&show_comments=false&show_user=false';
+
+  const widget = SC.Widget(iframe);
+  S.scWidget = widget;
+
+  widget.bind(SC.Widget.Events.READY, () => {
+    S.scReady = true;
+    // If there's already a track to play from snapshot
+    const pb = S.playback;
+    if (pb.currentIndex >= 0 && S.queue[pb.currentIndex]) {
+      loadTrack(S.queue[pb.currentIndex].url, pb.isPlaying, pb.position);
+    }
+  });
+
+  widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e) => {
+    // Only update UI from SC, don't send to server (server is authoritative)
+    S.localPosition = e.currentPosition;
+    S.localDuration = e.relativePosition > 0 ? e.currentPosition / e.relativePosition : 0;
+    updateProgressUI(e.currentPosition, S.localDuration);
+  });
+
+  widget.bind(SC.Widget.Events.FINISH, () => {
+    send({ type: 'track_ended', index: S.playback.currentIndex });
+  });
+
+  widget.bind(SC.Widget.Events.PLAY, () => {
+    document.getElementById('play-btn').textContent = '⏸';
+  });
+
+  widget.bind(SC.Widget.Events.PAUSE, () => {
+    document.getElementById('play-btn').textContent = '▶';
+  });
+}
+
+function loadTrack(url, autoPlay, seekTo) {
+  if (!S.scWidget || !S.scReady) return;
+  S.scCurrentUrl = url;
+  S.scWidget.load(url, {
+    auto_play: autoPlay,
+    hide_related: true,
+    show_comments: false,
+    show_user: false,
+    show_reposts: false,
+    visual: false,
+    color: '#e8a44a',
+    callback: () => {
+      if (seekTo && seekTo > 500) {
+        setTimeout(() => S.scWidget.seekTo(seekTo), 400);
+      }
+    }
+  });
+}
+
+// ════════════════════════════════════════════════
+//  PLAYBACK
+// ════════════════════════════════════════════════
+function applyPlayback(pb, fromSnapshot) {
+  const prev = S.playback;
+  S.playback = pb;
+
+  const item = S.queue[pb.currentIndex];
+  renderQueue(); // updates now-playing highlight
+
+  if (!item) {
+    document.getElementById('play-btn').textContent = '▶';
+    document.getElementById('progress-fill').style.width = '0%';
+    document.getElementById('time-current').textContent = '0:00';
+    document.getElementById('time-total').textContent = '0:00';
+    return;
+  }
+
+  document.getElementById('play-btn').textContent = pb.isPlaying ? '⏸' : '▶';
+
+  // Load track if changed
+  if (S.scReady && item.url !== S.scCurrentUrl) {
+    loadTrack(item.url, pb.isPlaying, pb.position);
+  } else if (S.scReady && item.url === S.scCurrentUrl) {
+    // Same track — just sync play/pause and position
+    if (pb.isPlaying) {
+      S.scWidget.play();
+      if (Math.abs((pb.position || 0) - (S.localPosition || 0)) > 3000) {
+        S.scWidget.seekTo(pb.position || 0);
+      }
+    } else {
+      S.scWidget.pause();
+      if (pb.position !== undefined) S.scWidget.seekTo(pb.position);
+    }
+  }
+}
+
+function updateProgressUI(pos, dur) {
+  const pct = dur > 0 ? Math.min(100, (pos / dur) * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('time-current').textContent = fmt(pos);
+  document.getElementById('time-total').textContent = fmt(dur);
+}
+
+function handleSeek(e) {
+  if (S.playback.currentIndex < 0) return;
+  const bar = document.getElementById('progress-bar');
+  const rect = bar.getBoundingClientRect();
+  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const dur = S.localDuration || 0;
+  send({ type: 'seek', position: Math.floor(pct * dur) });
+}
+
+function setVol(v) {
+  if (S.scWidget && S.scReady) S.scWidget.setVolume(parseInt(v));
+}
+
+// ════════════════════════════════════════════════
+//  SEARCH
+// ════════════════════════════════════════════════
+async function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  const el = document.getElementById('search-results');
+  el.innerHTML = `<div style="text-align:center;padding:20px;color:var(--text-dim);font-size:13px">🔍 Searching…</div>`;
+  try {
+    const url = `https://api.soundcloud.com/tracks?q=${encodeURIComponent(q)}&limit=12&client_id=a3e059563d7fd3372b49b37f00a00bcf`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error();
+    const data = await r.json();
+    const tracks = data.collection || data;
+    if (!tracks || !tracks.length) {
+      el.innerHTML = `<div class="hint-box">No results. Try the <strong>Add URL</strong> tab to paste a SoundCloud link directly.</div>`;
+      return;
+    }
+    el.innerHTML = tracks.map((t, i) => {
+      const art = t.artwork_url ? t.artwork_url.replace('-large','-t300x300') : '';
+      const artist = t.user?.username || 'Unknown';
+      const dur = t.duration ? fmt(t.duration) : '';
+      return `<div class="result-item slide-in" style="animation-delay:${i*0.035}s">
+        <div class="result-art">${art ? `<img src="${art}" alt="">` : '🎵'}</div>
+        <div class="result-meta">
+          <div class="result-title">${escHtml(t.title)}</div>
+          <div class="result-sub">${escHtml(artist)} · ${dur}</div>
+        </div>
+        <button class="add-btn" onclick="queueSearchResult(this,'${encodeURIComponent(t.permalink_url)}','${encodeURIComponent(t.title)}','${encodeURIComponent(artist)}','${encodeURIComponent(art)}')">+ Queue</button>
+      </div>`;
+    }).join('');
+  } catch {
+    el.innerHTML = `<div class="hint-box">Search unavailable — use the <strong>Add URL</strong> tab to paste SoundCloud links directly.</div>`;
+  }
+}
+
+function queueSearchResult(btn, url, title, artist, art) {
+  send({
+    type: 'queue_add',
+    url: decodeURIComponent(url),
+    title: decodeURIComponent(title),
+    artist: decodeURIComponent(artist),
+    art: decodeURIComponent(art)
+  });
+  btn.textContent = '✓ Added';
+  btn.classList.add('added');
+}
+
+// ════════════════════════════════════════════════
+//  ADD FROM URL
+// ════════════════════════════════════════════════
+async function addFromUrl() {
+  const raw = document.getElementById('url-input').value.trim();
+  const status = document.getElementById('url-status');
+  if (!raw) { status.textContent = 'Paste a SoundCloud URL'; return; }
+  if (!raw.includes('soundcloud.com')) { status.textContent = 'Only SoundCloud URLs are supported'; return; }
+  status.textContent = 'Fetching track info…';
+  try {
+    const r = await fetch(`https://soundcloud.com/oembed?url=${encodeURIComponent(raw)}&format=json`);
+    if (!r.ok) throw new Error();
+    const d = await r.json();
+    send({ type: 'queue_add', url: raw, title: d.title || 'Unknown', artist: d.author_name || 'SoundCloud', art: d.thumbnail_url || '' });
+    document.getElementById('url-input').value = '';
+    status.textContent = '';
+    toast('Added to queue!');
+  } catch {
+    // Add anyway, no metadata
+    send({ type: 'queue_add', url: raw, title: raw.split('/').pop() || 'Track', artist: 'SoundCloud', art: '' });
+    document.getElementById('url-input').value = '';
+    status.textContent = '';
+    toast('Added to queue!');
+  }
+}
+
+// ════════════════════════════════════════════════
+//  CHAT
+// ════════════════════════════════════════════════
+function sendChat() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  send({ type: 'chat', text });
+  input.value = '';
+}
+
+function addChatMsg(msg) {
+  const msgs = document.getElementById('chat-messages');
+  const time = new Date(msg.ts);
+  const timeStr = `${time.getHours()}:${String(time.getMinutes()).padStart(2,'0')}`;
+  const div = document.createElement('div');
+  div.className = 'chat-msg slide-in';
+  div.innerHTML = `
+    <div class="chat-avatar" style="background:${msg.color}22;color:${msg.color}">${msg.emoji}</div>
+    <div class="chat-body">
+      <div class="chat-meta"><span class="chat-name">${escHtml(msg.name)}</span><span class="chat-time">${timeStr}</span></div>
+      <div class="chat-text">${escHtml(msg.text)}</div>
+    </div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function addSystemMsg(text) {
+  const msgs = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-system';
+  div.innerHTML = `<span>${escHtml(text)}</span>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ════════════════════════════════════════════════
+//  INIT — check URL for room code
+// ════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  const p = new URLSearchParams(location.search);
+  const code = p.get('room');
+  if (code) {
+    document.getElementById('join-code').value = code.toUpperCase();
+    document.getElementById('join-name').focus();
+    toast(`Room code detected — enter your name to join`);
+  }
+});
+
+// Warn before closing if in a room
+window.addEventListener('beforeunload', (e) => {
+  if (S.roomCode) { e.preventDefault(); e.returnValue = ''; }
+});
+</script>
+</body>
+</html>
