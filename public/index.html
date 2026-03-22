@@ -3,484 +3,741 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hearth — Listen Together</title>
+<title>Hearth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600;700&family=Petit+Formal+Script&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
+/* ═══════════════════════════════════════════════════════════
+   THEME SYSTEM — genuinely different aesthetics
+═══════════════════════════════════════════════════════════ */
+
+/* 🪵 CABIN — warm firelit wood cabin */
+[data-theme="cabin"] {
+  --bg: #1c1510; --sf: #251c14; --sf2: #2f2318; --sf3: #3a2d20;
+  --br: #4a3626; --ac: #e8a44a; --acd: #b07030; --acg: #f5c870;
+  --danger: #d06050; --ok: #70b870;
+  --tx: #f0e4d0; --txm: #b89070; --txd: #7a5840;
+  --font-h: 'Lora', serif; --font-b: 'DM Sans', sans-serif;
+  --btn-tx: #1c1510;
+  --wall-bg: repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 60px), repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 60px), #1c1510;
+  --glow1: rgba(232,164,74,0.08); --glow2: rgba(201,100,80,0.05);
+  --particle: '✦';
+}
+
+/* 🌊 AQUARIUM — deep ocean bioluminescence */
+[data-theme="aquarium"] {
+  --bg: #030d18; --sf: #061624; --sf2: #0a1f30; --sf3: #0e283c;
+  --br: #0e3550; --ac: #00d4ff; --acd: #0099cc; --acg: #80eeff;
+  --danger: #ff6b6b; --ok: #00ffaa;
+  --tx: #d0f4ff; --txm: #60b8d8; --txd: #305070;
+  --font-h: 'Syne', sans-serif; --font-b: 'DM Sans', sans-serif;
+  --btn-tx: #030d18;
+  --wall-bg: radial-gradient(ellipse at 20% 50%, rgba(0,100,180,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0,180,255,0.1) 0%, transparent 40%), #030d18;
+  --glow1: rgba(0,212,255,0.08); --glow2: rgba(0,100,255,0.05);
+  --particle: '◉';
+}
+
+/* 🌸 COTTAGECORE — pressed flowers & warm linen */
+[data-theme="cottage"] {
+  --bg: #faf5ee; --sf: #f2ebe0; --sf2: #e8dfd0; --sf3: #ddd0bc;
+  --br: #c8b898; --ac: #8b5e3c; --acd: #6b4020; --acg: #b07848;
+  --danger: #c04040; --ok: #4a8040;
+  --tx: #2a1c10; --txm: #6a4830; --txd: #9a7858;
+  --font-h: 'Crimson Pro', serif; --font-b: 'Nunito', sans-serif;
+  --btn-tx: #faf5ee;
+  --wall-bg: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8b898' fill-opacity='0.15'%3E%3Cpath d='M30 0c16.569 0 30 13.431 30 30S46.569 60 30 60 0 46.569 0 30 13.431 0 30 0zm0 4C15.64 4 4 15.64 4 30s11.64 26 26 26 26-11.64 26-26S44.36 4 30 4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"), #faf5ee;
+  --glow1: rgba(139,94,60,0.05); --glow2: rgba(200,150,100,0.04);
+  --particle: '❀';
+}
+
+/* 🌙 OBSERVATORY — midnight stars & brass telescopes */
+[data-theme="observatory"] {
+  --bg: #080a14; --sf: #0e1222; --sf2: #141830; --sf3: #1a203a;
+  --br: #252c48; --ac: #c8a84a; --acd: #9a7828; --acg: #f0cc70;
+  --danger: #e05050; --ok: #50c870;
+  --tx: #e8e0f0; --txm: #9888b0; --txd: #4a4060;
+  --font-h: 'Space Mono', monospace; --font-b: 'DM Sans', sans-serif;
+  --btn-tx: #080a14;
+  --wall-bg: radial-gradient(ellipse at 50% 0%, rgba(80,60,160,0.2) 0%, transparent 60%), #080a14;
+  --glow1: rgba(200,168,74,0.07); --glow2: rgba(100,80,200,0.06);
+  --particle: '★';
+}
+
+/* 🍄 MUSHROOM GROVE — enchanted forest floor */
+[data-theme="mushroom"] {
+  --bg: #100e08; --sf: #18160c; --sf2: #201e12; --sf3: #282618;
+  --br: #3a3420; --ac: #d4a830; --acd: #a07820; --acg: #f0cc50;
+  --danger: #d06840; --ok: #70c860;
+  --tx: #f0ecd4; --txm: #c0a860; --txd: #7a6830;
+  --font-h: 'Nunito', sans-serif; --font-b: 'Nunito', sans-serif;
+  --btn-tx: #100e08;
+  --wall-bg: repeating-radial-gradient(circle at 0 0, transparent 0, #100e08 8px), repeating-linear-gradient(rgba(212,168,48,0.03), rgba(212,168,48,0.03));
+  --glow1: rgba(212,168,48,0.08); --glow2: rgba(180,100,40,0.06);
+  --particle: '🍄';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+═══════════════════════════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --r: 12px; --rl: 20px; }
 
-/* ══════════════════════════════════════════
-   THEMES
-══════════════════════════════════════════ */
-
-/* 🪵 Ember — warm dark wood (default) */
-[data-theme="ember"] {
-  --bg: #1a1410; --surface: #241d16; --surface2: #2e2318; --surface3: #3a2d20;
-  --border: #4a3828; --accent: #e8a44a; --accent-dim: #b07830; --accent-glow: #f0c070;
-  --danger: #c97060; --success: #78c878;
-  --text: #f0e8dc; --text-mid: #b89878; --text-dim: #7a6050;
-  --font-display: 'Lora', serif; --font-body: 'DM Sans', sans-serif;
-  --amb1: rgba(232,164,74,0.07); --amb2: rgba(201,112,96,0.05);
-  --btn-text: #1a1410;
-  --grain-opacity: 0.5;
-}
-
-/* 🌙 Midnight — deep navy blue */
-[data-theme="midnight"] {
-  --bg: #0d1117; --surface: #161b22; --surface2: #1c2230; --surface3: #222d3d;
-  --border: #2d3d55; --accent: #58a6ff; --accent-dim: #3a7bd5; --accent-glow: #80bdff;
-  --danger: #f85149; --success: #3fb950;
-  --text: #e6edf3; --text-mid: #8b949e; --text-dim: #484f58;
-  --font-display: 'Space Mono', monospace; --font-body: 'DM Sans', sans-serif;
-  --amb1: rgba(88,166,255,0.06); --amb2: rgba(88,96,255,0.04);
-  --btn-text: #0d1117;
-  --grain-opacity: 0.3;
-}
-
-/* 🌿 Forest — deep green moss */
-[data-theme="forest"] {
-  --bg: #0f1a12; --surface: #162019; --surface2: #1c2a20; --surface3: #223428;
-  --border: #2d4a35; --accent: #7ec87e; --accent-dim: #4a9450; --accent-glow: #a0e0a0;
-  --danger: #e07060; --success: #7ec87e;
-  --text: #e0f0e0; --text-mid: #80a880; --text-dim: #4a6a4a;
-  --font-display: 'Crimson Pro', serif; --font-body: 'Nunito', sans-serif;
-  --amb1: rgba(126,200,126,0.07); --amb2: rgba(74,148,80,0.04);
-  --btn-text: #0f1a12;
-  --grain-opacity: 0.4;
-}
-
-/* 🌸 Sakura — soft pink & cream */
-[data-theme="sakura"] {
-  --bg: #1a1018; --surface: #231520; --surface2: #2c1c28; --surface3: #382332;
-  --border: #4a2d44; --accent: #e890b8; --accent-dim: #c05888; --accent-glow: #f0b0d0;
-  --danger: #ff6b6b; --success: #78c878;
-  --text: #f5e0f0; --text-mid: #c088b0; --text-dim: #7a4868;
-  --font-display: 'Lora', serif; --font-body: 'Nunito', sans-serif;
-  --amb1: rgba(232,144,184,0.08); --amb2: rgba(192,88,136,0.05);
-  --btn-text: #1a1018;
-  --grain-opacity: 0.4;
-}
-
-/* ☕ Latte — warm beige light mode */
-[data-theme="latte"] {
-  --bg: #f5f0e8; --surface: #ede6d8; --surface2: #e0d8c8; --surface3: #d4c8b4;
-  --border: #c4b49a; --accent: #8b5e3c; --accent-dim: #6b4228; --accent-glow: #a87850;
-  --danger: #c04040; --success: #4a8a4a;
-  --text: #2a1f14; --text-mid: #6a5040; --text-dim: #9a8070;
-  --font-display: 'Crimson Pro', serif; --font-body: 'Nunito', sans-serif;
-  --amb1: rgba(139,94,60,0.06); --amb2: rgba(180,130,80,0.05);
-  --btn-text: #f5f0e8;
-  --grain-opacity: 0.3;
-}
-
-/* ══════════════════════════════════════════
-   BASE STYLES
-══════════════════════════════════════════ */
 html, body {
-  height: 100%; background: var(--bg); color: var(--text);
-  font-family: var(--font-body); font-size: 14px; line-height: 1.6; overflow: hidden;
-  transition: background 0.4s, color 0.4s;
+  height: 100%; background: var(--bg); color: var(--tx);
+  font-family: var(--font-b); font-size: 14px; line-height: 1.6;
+  overflow: hidden; transition: background 0.5s, color 0.4s;
 }
 
-body::before {
-  content: ''; position: fixed; inset: 0;
+/* grain */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  background-size: 200px; pointer-events: none; z-index: 9999; opacity: var(--grain-opacity);
+  background-size: 200px; opacity: 0.45;
 }
 
-.ambient { position: fixed; border-radius: 50%; filter: blur(130px); pointer-events: none; z-index: 0; transition: background 0.6s; }
-.ambient-1 { width: 500px; height: 400px; background: var(--amb1); top: -100px; left: -100px; }
-.ambient-2 { width: 400px; height: 300px; background: var(--amb2); bottom: -80px; right: -80px; }
+.glow { position: fixed; border-radius: 50%; filter: blur(140px); pointer-events: none; z-index: 0; }
+.glow-1 { width: 500px; height: 400px; background: var(--glow1); top: -120px; left: -80px; }
+.glow-2 { width: 400px; height: 300px; background: var(--glow2); bottom: -80px; right: -80px; }
 
-:root { --radius: 12px; --radius-lg: 20px; }
+/* ── particles canvas (theme-specific floating particles) ── */
+#particles { position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.4; }
 
-/* ── screens ── */
-.screen { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; align-items: center; justify-content: center; }
-.screen.active { display: flex; }
-#room { display: none; flex-direction: row; align-items: stretch; }
-#room.active { display: flex; }
-
-/* ── inputs / buttons ── */
-input[type="text"] {
-  width: 100%; background: var(--surface2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 11px 14px; color: var(--text);
-  font-family: var(--font-body); font-size: 14px; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-input[type="text"]::placeholder { color: var(--text-dim); }
-input[type="text"]:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
-
-.btn { width: 100%; padding: 12px 20px; border: none; border-radius: var(--radius);
-  font-family: var(--font-body); font-size: 14px; font-weight: 500; cursor: pointer;
-  transition: all 0.18s ease; letter-spacing: 0.02em; }
-.btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent-dim)); color: var(--btn-text); box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 30%, transparent); }
-.btn-primary:hover { transform: translateY(-1px); filter: brightness(1.06); box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 40%, transparent); }
-.btn-primary:active { transform: translateY(0); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-mid); }
-.btn-ghost:hover { border-color: var(--accent-dim); color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
-.btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
-
-.btn-sm { padding: 10px 14px; border: none; border-radius: var(--radius);
-  font-family: var(--font-body); font-size: 13px; font-weight: 500; cursor: pointer;
-  transition: all 0.15s; white-space: nowrap; }
-.btn-sm.accent { background: linear-gradient(135deg, var(--accent), var(--accent-dim)); color: var(--btn-text); }
-.btn-sm.accent:hover { filter: brightness(1.08); }
-
-.divider { display: flex; align-items: center; gap: 12px; color: var(--text-dim); font-size: 12px; margin: 4px 0; }
-.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-.error-msg { font-size: 12px; color: var(--danger); text-align: center; min-height: 16px; }
-
-/* ── connecting overlay ── */
-#connecting { position: fixed; inset: 0; z-index: 200; background: color-mix(in srgb, var(--bg) 92%, transparent);
-  display: none; align-items: center; justify-content: center; flex-direction: column; gap: 12px; }
-#connecting.show { display: flex; }
-.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-.conn-text { font-size: 13px; color: var(--text-mid); }
-
-/* ── connection banner ── */
-.conn-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 150; padding: 6px 16px;
-  font-size: 12px; text-align: center; display: none; }
-.conn-bar.warn { display: block; background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); border-bottom: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
-.conn-bar.error { display: block; background: color-mix(in srgb, var(--danger) 15%, transparent); color: var(--danger); border-bottom: 1px solid color-mix(in srgb, var(--danger) 25%, transparent); }
-
-/* ══════════════════════════════════════════
-   LANDING
-══════════════════════════════════════════ */
-.landing-inner {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 28px; max-width: 420px; width: 100%; padding: 0 24px;
-  animation: fadeUp 0.6s ease both;
-}
-.logo-block { text-align: center; }
-.logo-icon { font-size: 48px; line-height: 1; filter: drop-shadow(0 0 20px color-mix(in srgb, var(--accent) 60%, transparent)); animation: flicker 4s ease-in-out infinite; }
-@keyframes flicker { 0%,100%{filter:drop-shadow(0 0 20px color-mix(in srgb,var(--accent) 60%,transparent))} 50%{filter:drop-shadow(0 0 30px color-mix(in srgb,var(--accent-glow) 80%,transparent))} }
-.logo-name { font-family: var(--font-display); font-size: 42px; font-weight: 600; letter-spacing: -0.5px; color: var(--accent-glow); line-height: 1.1; }
-.logo-tag { font-size: 13px; color: var(--text-mid); letter-spacing: 0.08em; margin-top: 4px; font-weight: 300; }
-
-.action-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); padding: 28px; width: 100%;
-  display: flex; flex-direction: column; gap: 10px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
-}
-.action-label { font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--text-mid); margin-bottom: 2px; }
-
-/* theme picker on landing */
-.theme-row { display: flex; align-items: center; gap: 8px; justify-content: center; padding: 4px 0; }
-.theme-swatch {
-  width: 22px; height: 22px; border-radius: 50%; cursor: pointer;
-  border: 2px solid transparent; transition: all 0.2s;
-  position: relative;
-}
-.theme-swatch:hover { transform: scale(1.15); }
-.theme-swatch.active { border-color: var(--text); transform: scale(1.15); }
-.theme-swatch[data-t="ember"]   { background: radial-gradient(circle, #e8a44a, #1a1410); }
-.theme-swatch[data-t="midnight"]{ background: radial-gradient(circle, #58a6ff, #0d1117); }
-.theme-swatch[data-t="forest"]  { background: radial-gradient(circle, #7ec87e, #0f1a12); }
-.theme-swatch[data-t="sakura"]  { background: radial-gradient(circle, #e890b8, #1a1018); }
-.theme-swatch[data-t="latte"]   { background: radial-gradient(circle, #8b5e3c, #f5f0e8); }
-.theme-label { font-size: 11px; color: var(--text-dim); }
-
-/* ══════════════════════════════════════════
-   ROOM LAYOUT
-══════════════════════════════════════════ */
-.panel-left {
-  width: 290px; min-width: 240px;
-  background: var(--surface); border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; overflow: hidden;
-  transition: background 0.4s, border-color 0.4s;
-}
-
-.room-header { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 5px; }
-.room-header-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.room-name-display { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--accent-glow); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
-.badge { display: inline-flex; align-items: center; gap: 5px; background: color-mix(in srgb, var(--accent) 15%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 500; color: var(--accent); white-space: nowrap; }
-.badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.room-id-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-dim); flex-wrap: wrap; }
-.room-id-code { font-family: monospace; font-size: 12px; color: var(--text-mid); background: var(--surface2); border-radius: 4px; padding: 1px 7px; letter-spacing: 0.1em; }
-.copy-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 11px; padding: 2px 6px; border-radius: 4px; transition: all 0.15s; font-family: var(--font-body); }
-.copy-btn:hover { color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
-
-/* theme picker in room */
-.room-theme-row { display: flex; align-items: center; gap: 6px; padding: 6px 18px 0; }
-.room-theme-row .theme-label { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; }
-.room-theme-row .theme-swatch { width: 16px; height: 16px; }
-
-.section-label { padding: 12px 18px 5px; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; }
-.listeners-list { padding: 0 12px; display: flex; flex-direction: column; gap: 3px; overflow-y: auto; max-height: 130px; }
-.listener-item { display: flex; align-items: center; gap: 9px; padding: 6px 8px; border-radius: 8px; transition: background 0.15s; }
-.listener-item:hover { background: var(--surface2); }
-.avatar { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
-.listener-name { font-size: 13px; color: var(--text); }
-.you-tag { font-size: 10px; color: var(--accent-dim); margin-left: 3px; font-weight: 500; }
-
-.queue-area { display: flex; flex-direction: column; flex: 1; overflow: hidden; border-top: 1px solid var(--border); margin-top: 6px; }
-.queue-list { flex: 1; overflow-y: auto; padding: 4px 8px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.queue-item { display: flex; align-items: center; gap: 9px; padding: 7px 9px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
-.queue-item:hover { background: var(--surface2); }
-.queue-item.now-playing { background: color-mix(in srgb, var(--accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent); }
-.queue-thumb { width: 36px; height: 36px; border-radius: 6px; background: var(--surface3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--text-dim); }
-.queue-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.queue-meta { flex: 1; min-width: 0; }
-.queue-title { font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.queue-sub { font-size: 11px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.now-icon { display: none; flex-shrink: 0; gap: 2px; align-items: flex-end; height: 14px; }
-.queue-item.now-playing .now-icon { display: flex; }
-.now-icon span { display: block; width: 3px; border-radius: 2px; background: var(--accent); animation: eq 1s ease-in-out infinite; }
-.now-icon span:nth-child(1) { height: 8px; animation-delay: 0s; }
-.now-icon span:nth-child(2) { height: 14px; animation-delay: 0.15s; }
-.now-icon span:nth-child(3) { height: 6px; animation-delay: 0.3s; }
-@keyframes eq { 0%,100%{transform:scaleY(0.4)} 50%{transform:scaleY(1)} }
-.queue-remove { background: none; border: none; cursor: pointer; color: var(--text-dim); font-size: 14px; padding: 4px; border-radius: 4px; opacity: 0; transition: all 0.15s; flex-shrink: 0; }
-.queue-item:hover .queue-remove { opacity: 1; }
-.queue-remove:hover { color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, transparent); }
-.empty-queue { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 28px 16px; text-align: center; color: var(--text-dim); }
-.empty-queue .eq-icon { font-size: 26px; opacity: 0.4; }
-.empty-queue p { font-size: 12px; line-height: 1.5; }
-
-/* ══════════════════════════════════════════
-   CENTER PANEL
-══════════════════════════════════════════ */
-.panel-center { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); transition: background 0.4s; }
-
-.player-area { border-bottom: 1px solid var(--border); padding: 20px 24px 16px; background: linear-gradient(180deg, var(--surface) 0%, transparent 100%); display: flex; flex-direction: column; gap: 13px; }
-.np-header { display: flex; align-items: center; gap: 14px; }
-.np-art { width: 60px; height: 60px; border-radius: 10px; background: var(--surface2); flex-shrink: 0; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.35); position: relative; }
-.np-art img { width: 100%; height: 100%; object-fit: cover; display: none; }
-.np-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; color: var(--text-dim); }
-.np-meta { flex: 1; min-width: 0; }
-.np-title { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.np-artist { font-size: 12px; color: var(--text-mid); margin-top: 2px; }
-.np-added { font-size: 11px; color: var(--text-dim); margin-top: 3px; }
-
-.progress-row { display: flex; align-items: center; gap: 10px; }
-.time-label { font-size: 11px; color: var(--text-dim); min-width: 32px; font-variant-numeric: tabular-nums; }
-.time-label.right { text-align: right; }
-.progress-bar { flex: 1; height: 4px; background: var(--surface3); border-radius: 2px; cursor: pointer; position: relative; }
-.progress-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent-dim), var(--accent)); pointer-events: none; position: relative; min-width: 0; }
-.progress-fill::after { content: ''; position: absolute; right: -5px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-glow); box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 60%, transparent); opacity: 0; transition: opacity 0.15s; }
-.progress-bar:hover .progress-fill::after { opacity: 1; }
-
-.controls-row { display: flex; align-items: center; gap: 6px; justify-content: center; }
-.ctrl-btn { background: none; border: none; cursor: pointer; color: var(--text-mid); border-radius: 8px; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.15s; }
-.ctrl-btn:hover { color: var(--text); background: var(--surface2); }
-.ctrl-btn.play-pause { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-dim)); color: var(--btn-text); font-size: 16px; box-shadow: 0 4px 16px color-mix(in srgb, var(--accent) 30%, transparent); }
-.ctrl-btn.play-pause:hover { transform: scale(1.06); box-shadow: 0 6px 20px color-mix(in srgb, var(--accent) 40%, transparent); }
-
-.volume-row { display: flex; align-items: center; gap: 8px; justify-content: center; }
-.vol-icon { font-size: 13px; color: var(--text-dim); }
-input[type="range"] { width: 90px; height: 4px; -webkit-appearance: none; appearance: none; background: var(--surface3); border-radius: 2px; cursor: pointer; outline: none; }
-input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); cursor: pointer; }
-
-/* SC hidden player */
-.sc-wrap { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; top: -9999px; left: -9999px; }
-
-/* tabs */
-.panel-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.tabs { display: flex; border-bottom: 1px solid var(--border); padding: 0 18px; }
-.tab-btn { background: none; border: none; cursor: pointer; color: var(--text-dim); font-family: var(--font-body); font-size: 13px; font-weight: 500; padding: 11px 14px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-.tab-panel { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 14px 18px; }
-.tab-panel.active { display: flex; }
-
-/* search */
-.search-bar { display: flex; gap: 8px; margin-bottom: 12px; }
-.search-bar input { flex: 1; }
-.search-results { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.result-item { display: flex; align-items: center; gap: 11px; padding: 9px 11px; border-radius: var(--radius); background: var(--surface2); border: 1px solid transparent; cursor: pointer; transition: all 0.15s; }
-.result-item:hover { border-color: var(--border); background: var(--surface3); }
-.result-art { width: 42px; height: 42px; border-radius: 7px; background: var(--surface3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-dim); }
-.result-art img { width: 100%; height: 100%; object-fit: cover; }
-.result-meta { flex: 1; min-width: 0; }
-.result-title { font-size: 13px; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.result-sub { font-size: 11px; color: var(--text-dim); margin-top: 1px; }
-.add-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; color: var(--text-mid); font-size: 12px; cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; font-family: var(--font-body); }
-.add-btn:hover { border-color: var(--accent-dim); color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
-.add-btn.added { border-color: color-mix(in srgb, var(--success) 50%, transparent); color: var(--success); background: color-mix(in srgb, var(--success) 10%, transparent); pointer-events: none; }
-
-.hint-box { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; font-size: 12px; color: var(--text-dim); line-height: 1.7; }
-.hint-box strong { color: var(--text-mid); }
-
-/* url tab */
-.url-row { display: flex; gap: 8px; margin-bottom: 8px; }
-.url-status { font-size: 12px; color: var(--text-dim); min-height: 16px; }
-
-/* chat */
-.chat-msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-bottom: 4px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
-.chat-msg { display: flex; gap: 8px; align-items: flex-start; }
-.chat-av { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
-.chat-body { flex: 1; min-width: 0; }
-.chat-meta { display: flex; align-items: baseline; gap: 6px; margin-bottom: 1px; }
-.chat-name { font-size: 12px; font-weight: 500; color: var(--text-mid); }
-.chat-time { font-size: 10px; color: var(--text-dim); }
-.chat-text { font-size: 13px; color: var(--text); line-height: 1.5; word-break: break-word; }
-.chat-system { text-align: center; font-size: 11px; color: var(--text-dim); padding: 2px 0; }
-.chat-system span { background: var(--surface2); padding: 3px 10px; border-radius: 12px; }
-.chat-input-row { display: flex; gap: 8px; margin-top: 10px; }
-.chat-input-row input { flex: 1; }
-.send-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 0 14px; color: var(--text-mid); cursor: pointer; font-size: 16px; transition: all 0.15s; }
-.send-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
-
-/* toast */
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 18px; font-size: 13px; color: var(--text); opacity: 0; pointer-events: none; transition: all 0.3s ease; z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-@keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.slide-in { animation: fadeUp 0.3s ease both; }
+/* ── scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--br); border-radius: 2px; }
+
+/* ── inputs ── */
+input[type="text"], input[type="password"] {
+  width: 100%; background: var(--sf2); border: 1px solid var(--br);
+  border-radius: var(--r); padding: 11px 14px; color: var(--tx);
+  font-family: var(--font-b); font-size: 14px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input::placeholder { color: var(--txd); }
+input:focus { border-color: var(--acd); box-shadow: 0 0 0 3px color-mix(in srgb,var(--ac) 18%,transparent); }
+
+/* ── buttons ── */
+.btn { width: 100%; padding: 12px 20px; border: none; border-radius: var(--r);
+  font-family: var(--font-b); font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: all 0.18s; letter-spacing: 0.02em; }
+.btn-p { background: linear-gradient(135deg, var(--ac), var(--acd)); color: var(--btn-tx); box-shadow: 0 4px 16px color-mix(in srgb,var(--ac) 28%,transparent); }
+.btn-p:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn-p:active { transform: none; }
+.btn-p:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-g { background: transparent; border: 1px solid var(--br); color: var(--txm); }
+.btn-g:hover { border-color: var(--acd); color: var(--ac); background: color-mix(in srgb,var(--ac) 8%,transparent); }
+.btn-sm { padding: 9px 14px; border: none; border-radius: var(--r); font-family: var(--font-b); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.btn-sm.ac { background: linear-gradient(135deg, var(--ac), var(--acd)); color: var(--btn-tx); }
+.btn-sm.ac:hover { filter: brightness(1.08); }
+.btn-sm.ghost { background: transparent; border: 1px solid var(--br); color: var(--txm); }
+.btn-sm.ghost:hover { border-color: var(--acd); color: var(--ac); }
+
+/* ── divider / error ── */
+.div { display: flex; align-items: center; gap: 12px; color: var(--txd); font-size: 12px; margin: 4px 0; }
+.div::before, .div::after { content: ''; flex: 1; height: 1px; background: var(--br); }
+.err { font-size: 12px; color: var(--danger); min-height: 16px; text-align: center; }
+
+/* ═══════════════════════════════════════════════════════════
+   SCREEN SYSTEM
+═══════════════════════════════════════════════════════════ */
+.screen { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; align-items: center; justify-content: center; }
+.screen.active { display: flex; }
+#room-screen { display: none; flex-direction: row; align-items: stretch; }
+#room-screen.active { display: flex; }
+
+/* ── loading ── */
+#connecting { position: fixed; inset: 0; z-index: 200; background: color-mix(in srgb,var(--bg) 94%,transparent); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+#connecting.show { display: flex; }
+.spinner { width: 34px; height: 34px; border: 3px solid var(--br); border-top-color: var(--ac); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* conn banner */
+.conn-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 150; padding: 7px 16px; font-size: 12px; text-align: center; display: none; }
+.conn-bar.warn { display: block; background: color-mix(in srgb,var(--ac) 15%,transparent); color: var(--ac); border-bottom: 1px solid color-mix(in srgb,var(--ac) 25%,transparent); }
+
+/* toast */
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(12px); background: var(--sf2); border: 1px solid var(--br); border-radius: var(--r); padding: 10px 18px; font-size: 13px; color: var(--tx); opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 2000; box-shadow: 0 8px 24px rgba(0,0,0,0.4); white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+.fadein { animation: fadeUp 0.35s ease both; }
+
+/* ═══════════════════════════════════════════════════════════
+   AUTH SCREEN
+═══════════════════════════════════════════════════════════ */
+.auth-wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 400px; width: 100%; padding: 0 24px; animation: fadeUp 0.6s ease; }
+.logo-block { text-align: center; }
+.logo-icon { font-size: 52px; filter: drop-shadow(0 0 24px color-mix(in srgb,var(--ac) 60%,transparent)); animation: flicker 4s ease-in-out infinite; line-height: 1; }
+@keyframes flicker { 0%,100%{filter:drop-shadow(0 0 20px color-mix(in srgb,var(--ac) 55%,transparent))} 50%{filter:drop-shadow(0 0 35px color-mix(in srgb,var(--acg) 80%,transparent))} }
+.logo-name { font-family: var(--font-h); font-size: 44px; font-weight: 600; color: var(--acg); line-height: 1.1; }
+.logo-sub { font-size: 12px; color: var(--txm); letter-spacing: 0.1em; margin-top: 4px; text-transform: lowercase; }
+
+.auth-card { background: var(--sf); border: 1px solid var(--br); border-radius: var(--rl); padding: 28px; width: 100%; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 12px 48px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05); }
+.auth-title { font-family: var(--font-h); font-size: 15px; font-weight: 500; color: var(--txm); margin-bottom: 2px; }
+
+/* theme strip on auth screen */
+.theme-strip { display: flex; align-items: center; gap: 10px; justify-content: center; padding: 2px 0 4px; }
+.th-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; flex-shrink: 0; }
+.th-dot:hover { transform: scale(1.2); }
+.th-dot.on { border-color: var(--tx); transform: scale(1.2); }
+.th-dot[data-t="cabin"]      { background: radial-gradient(circle at 35% 35%, #e8a44a 30%, #1c1510); }
+.th-dot[data-t="aquarium"]   { background: radial-gradient(circle at 35% 35%, #00d4ff 30%, #030d18); }
+.th-dot[data-t="cottage"]    { background: radial-gradient(circle at 35% 35%, #8b5e3c 30%, #faf5ee); }
+.th-dot[data-t="observatory"]{ background: radial-gradient(circle at 35% 35%, #c8a84a 30%, #080a14); }
+.th-dot[data-t="mushroom"]   { background: radial-gradient(circle at 35% 35%, #d4a830 30%, #100e08); }
+.theme-strip-label { font-size: 10px; color: var(--txd); letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* ═══════════════════════════════════════════════════════════
+   ROOM SCREEN
+═══════════════════════════════════════════════════════════ */
+
+/* ── WALLPAPERS ── */
+.room-bg {
+  position: fixed; inset: 0; z-index: 5; pointer-events: none;
+  background: var(--wall-bg);
+}
+[data-wallpaper="cabin"]       .room-bg { background: var(--wall-bg); }
+[data-wallpaper="stars"]       .room-bg { background: radial-gradient(ellipse at 60% 40%, rgba(100,80,200,0.15) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(60,40,160,0.1) 0%, transparent 40%), #080a14; }
+[data-wallpaper="forest"]      .room-bg { background: linear-gradient(180deg, #050f06 0%, #0d1f0e 100%); }
+[data-wallpaper="aurora"]      .room-bg { background: linear-gradient(135deg, #030820 0%, #0a1a30 30%, #052015 60%, #030820 100%); }
+[data-wallpaper="bubbly"]      .room-bg { background: radial-gradient(ellipse at 30% 70%, rgba(0,180,255,0.12) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(0,100,255,0.08) 0%, transparent 40%), #030d18; }
+[data-wallpaper="roses"]       .room-bg { background: linear-gradient(160deg, #fdf0f5 0%, #f0e8ff 100%); }
+[data-wallpaper="linen"]       .room-bg { background: repeating-linear-gradient(45deg, #faf0e4 0px, #faf0e4 2px, #f2e8d8 2px, #f2e8d8 8px); }
+[data-wallpaper="moonlight"]   .room-bg { background: radial-gradient(ellipse at 50% -10%, rgba(200,168,74,0.2) 0%, transparent 50%), #080a14; }
+[data-wallpaper="spores"]      .room-bg { background: radial-gradient(circle at 50% 50%, #1a1608 0%, #100e08 100%); }
+
+.panel-left {
+  width: 292px; min-width: 240px; position: relative; z-index: 20;
+  background: color-mix(in srgb, var(--sf) 92%, transparent);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid var(--br);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.panel-center {
+  flex: 1; position: relative; z-index: 20;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* room header */
+.room-hdr { padding: 16px 16px 10px; border-bottom: 1px solid var(--br); }
+.room-hdr-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 5px; }
+.room-name { font-family: var(--font-h); font-size: 16px; font-weight: 600; color: var(--acg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.badge { display: inline-flex; align-items: center; gap: 5px; background: color-mix(in srgb,var(--ac) 15%,transparent); border: 1px solid color-mix(in srgb,var(--ac) 22%,transparent); border-radius: 20px; padding: 3px 9px; font-size: 11px; color: var(--ac); }
+.badge .dot { width: 5px; height: 5px; background: var(--ac); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.room-code-row { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--txd); }
+.room-code { font-family: monospace; font-size: 11px; background: var(--sf2); border-radius: 4px; padding: 1px 7px; color: var(--txm); letter-spacing: 0.1em; }
+.copy-btn { background: none; border: none; cursor: pointer; font-size: 11px; color: var(--txd); padding: 2px 6px; border-radius: 4px; transition: all 0.15s; font-family: var(--font-b); }
+.copy-btn:hover { color: var(--ac); background: color-mix(in srgb,var(--ac) 10%,transparent); }
+
+/* mood text */
+.mood-row { padding: 6px 16px 2px; font-size: 12px; color: var(--txm); font-style: italic; min-height: 22px; font-family: var(--font-h); }
+
+/* theme strip in room */
+.room-theme-row { display: flex; align-items: center; gap: 6px; padding: 6px 16px 4px; border-bottom: 1px solid var(--br); }
+.room-theme-row .theme-strip-label { font-size: 9px; }
+.room-theme-row .th-dot { width: 14px; height: 14px; }
+
+/* listeners */
+.sec-label { padding: 10px 16px 4px; font-size: 9px; font-weight: 600; letter-spacing: 0.14em; color: var(--txd); text-transform: uppercase; }
+.listeners { padding: 0 10px; max-height: 110px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.listener { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 8px; transition: background 0.15s; cursor: default; }
+.listener:hover { background: var(--sf2); }
+.av { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.listener-name { font-size: 12px; color: var(--tx); }
+.you-tag { font-size: 9px; color: var(--acd); margin-left: 3px; font-weight: 600; }
+
+/* queue */
+.queue-area { display: flex; flex-direction: column; flex: 1; overflow: hidden; border-top: 1px solid var(--br); margin-top: 4px; }
+.queue-list { flex: 1; overflow-y: auto; padding: 4px 8px; }
+.q-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.q-item:hover { background: var(--sf2); }
+.q-item.playing { background: color-mix(in srgb,var(--ac) 10%,transparent); border: 1px solid color-mix(in srgb,var(--ac) 16%,transparent); }
+.q-thumb { width: 34px; height: 34px; border-radius: 6px; background: var(--sf3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--txd); }
+.q-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.q-meta { flex: 1; min-width: 0; }
+.q-title { font-size: 12px; font-weight: 500; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.q-sub { font-size: 10px; color: var(--txd); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.eq-icon { display: none; flex-shrink: 0; gap: 2px; align-items: flex-end; height: 13px; }
+.q-item.playing .eq-icon { display: flex; }
+.eq-icon span { display: block; width: 3px; border-radius: 2px; background: var(--ac); animation: eq 1s ease-in-out infinite; }
+.eq-icon span:nth-child(1){height:8px;animation-delay:0s}
+.eq-icon span:nth-child(2){height:13px;animation-delay:0.15s}
+.eq-icon span:nth-child(3){height:5px;animation-delay:0.3s}
+@keyframes eq{0%,100%{transform:scaleY(0.35)}50%{transform:scaleY(1)}}
+.q-rm { background: none; border: none; cursor: pointer; color: var(--txd); font-size: 13px; padding: 4px; border-radius: 4px; opacity: 0; transition: all 0.15s; flex-shrink: 0; }
+.q-item:hover .q-rm { opacity: 1; }
+.q-rm:hover { color: var(--danger); background: color-mix(in srgb,var(--danger) 12%,transparent); }
+.q-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px 14px; text-align: center; color: var(--txd); }
+.q-empty .qei { font-size: 26px; opacity: 0.35; }
+.q-empty p { font-size: 11px; line-height: 1.5; }
+
+/* ── STICKER WIDGETS ── */
+.widget-layer { position: absolute; inset: 0; pointer-events: none; z-index: 10; overflow: hidden; }
+.widget { position: absolute; pointer-events: all; cursor: move; user-select: none; }
+.widget .w-inner { background: color-mix(in srgb,var(--sf) 85%,transparent); border: 1px solid var(--br); border-radius: 14px; padding: 10px 14px; backdrop-filter: blur(8px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); font-size: 22px; transition: box-shadow 0.2s; }
+.widget .w-inner:hover { box-shadow: 0 6px 28px rgba(0,0,0,0.5); }
+.widget.type-sticker .w-inner { padding: 8px; }
+.widget.type-note .w-inner { padding: 12px; min-width: 120px; max-width: 200px; font-size: 12px; line-height: 1.5; color: var(--tx); font-family: var(--font-h); background: color-mix(in srgb,var(--ac) 12%,transparent); }
+.widget.type-clock .w-inner { padding: 10px 16px; font-family: var(--font-h); font-size: 24px; color: var(--acg); text-shadow: 0 0 12px color-mix(in srgb,var(--ac) 50%,transparent); }
+.widget .w-delete { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; background: var(--danger); border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; color: #fff; cursor: pointer; border: none; z-index: 1; }
+.widget:hover .w-delete { display: flex; }
+
+/* ─ decor panel overlay ─ */
+.decor-panel { position: fixed; top: 50%; right: 0; transform: translateY(-50%); z-index: 100; background: var(--sf); border: 1px solid var(--br); border-right: none; border-radius: 14px 0 0 14px; padding: 14px; width: 220px; display: none; flex-direction: column; gap: 10px; box-shadow: -6px 0 30px rgba(0,0,0,0.4); }
+.decor-panel.open { display: flex; }
+.decor-panel h3 { font-family: var(--font-h); font-size: 14px; color: var(--ac); margin-bottom: 2px; }
+.decor-sec { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--txd); margin: 4px 0 2px; }
+.wall-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.wall-opt { border-radius: 8px; height: 32px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; }
+.wall-opt:hover { transform: scale(1.08); }
+.wall-opt.on { border-color: var(--ac); }
+.wall-opt[data-w="cabin"]      { background: linear-gradient(135deg,#3a2d20,#1c1510); }
+.wall-opt[data-w="stars"]      { background: linear-gradient(135deg,#252c48,#080a14); }
+.wall-opt[data-w="forest"]     { background: linear-gradient(135deg,#0d1f0e,#050f06); }
+.wall-opt[data-w="aurora"]     { background: linear-gradient(135deg,#052015,#030820); }
+.wall-opt[data-w="bubbly"]     { background: linear-gradient(135deg,#0a1f30,#030d18); }
+.wall-opt[data-w="roses"]      { background: linear-gradient(135deg,#f0e8ff,#fdf0f5); }
+.wall-opt[data-w="linen"]      { background: repeating-linear-gradient(45deg,#faf0e4 0px,#faf0e4 3px,#f2e8d8 3px,#f2e8d8 8px); }
+.wall-opt[data-w="moonlight"]  { background: linear-gradient(135deg,#0e1222,#080a14); }
+.wall-opt[data-w="spores"]     { background: linear-gradient(135deg,#282618,#100e08); }
+
+.sticker-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
+.sticker-opt { border-radius: 8px; padding: 6px; font-size: 18px; cursor: pointer; text-align: center; background: var(--sf2); border: 1px solid var(--br); transition: all 0.15s; }
+.sticker-opt:hover { background: var(--sf3); transform: scale(1.1); }
+
+.mood-input-row { display: flex; gap: 6px; }
+.mood-input-row input { flex: 1; font-size: 12px; padding: 7px 10px; }
+.mood-input-row button { flex-shrink: 0; }
+
+.decor-toggle { position: fixed; right: 0; top: 50%; transform: translateY(-50%); z-index: 99; background: var(--sf); border: 1px solid var(--br); border-right: none; border-radius: 10px 0 0 10px; padding: 10px 8px; cursor: pointer; color: var(--txm); font-size: 18px; transition: all 0.2s; box-shadow: -4px 0 16px rgba(0,0,0,0.3); }
+.decor-toggle:hover { color: var(--ac); background: var(--sf2); }
+#decor-toggle-btn { display: none; }
+
+/* ── PLAYER ── */
+.player-area { padding: 18px 22px 14px; border-bottom: 1px solid var(--br); background: linear-gradient(180deg, color-mix(in srgb,var(--sf) 80%,transparent) 0%, transparent 100%); display: flex; flex-direction: column; gap: 12px; }
+.np-row { display: flex; align-items: center; gap: 12px; }
+.np-art { width: 56px; height: 56px; border-radius: 10px; background: var(--sf2); flex-shrink: 0; overflow: hidden; position: relative; box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
+.np-art img { width: 100%; height: 100%; object-fit: cover; display: none; }
+.np-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--txd); }
+.np-meta { flex: 1; min-width: 0; }
+.np-title { font-family: var(--font-h); font-size: 17px; font-weight: 600; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np-artist { font-size: 11px; color: var(--txm); margin-top: 1px; }
+.np-by { font-size: 10px; color: var(--txd); margin-top: 2px; }
+.prog-row { display: flex; align-items: center; gap: 9px; }
+.prog-time { font-size: 10px; color: var(--txd); min-width: 30px; font-variant-numeric: tabular-nums; }
+.prog-time.r { text-align: right; }
+.prog-bar { flex: 1; height: 4px; background: var(--sf3); border-radius: 2px; cursor: pointer; }
+.prog-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--acd), var(--ac)); position: relative; pointer-events: none; }
+.prog-fill::after { content: ''; position: absolute; right: -5px; top: -4px; width: 12px; height: 12px; border-radius: 50%; background: var(--acg); box-shadow: 0 0 8px color-mix(in srgb,var(--ac) 55%,transparent); opacity: 0; transition: opacity 0.15s; }
+.prog-bar:hover .prog-fill::after { opacity: 1; }
+.ctrls { display: flex; align-items: center; gap: 5px; justify-content: center; }
+.ctrl { background: none; border: none; cursor: pointer; color: var(--txm); border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: all 0.15s; }
+.ctrl:hover { color: var(--tx); background: var(--sf2); }
+.ctrl.pp { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--ac), var(--acd)); color: var(--btn-tx); font-size: 15px; box-shadow: 0 4px 14px color-mix(in srgb,var(--ac) 30%,transparent); }
+.ctrl.pp:hover { transform: scale(1.07); box-shadow: 0 6px 20px color-mix(in srgb,var(--ac) 40%,transparent); }
+.vol-row { display: flex; align-items: center; gap: 7px; justify-content: center; }
+.vol-ic { font-size: 12px; color: var(--txd); }
+input[type="range"] { width: 85px; height: 4px; -webkit-appearance: none; appearance: none; background: var(--sf3); border-radius: 2px; cursor: pointer; outline: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--ac); cursor: pointer; }
+
+.sc-wrap { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; top: -9999px; left: -9999px; pointer-events: none; }
+
+/* ── TABS ── */
+.panel-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.tabs { display: flex; border-bottom: 1px solid var(--br); padding: 0 16px; }
+.tab-btn { background: none; border: none; cursor: pointer; color: var(--txd); font-family: var(--font-b); font-size: 12px; font-weight: 500; padding: 10px 12px; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; }
+.tab-btn:hover { color: var(--tx); }
+.tab-btn.on { color: var(--ac); border-bottom-color: var(--ac); }
+.tab-p { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 12px 14px; }
+.tab-p.on { display: flex; }
+
+/* search */
+.search-bar { display: flex; gap: 7px; margin-bottom: 10px; }
+.search-bar input { flex: 1; }
+.results { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.r-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: var(--r); background: var(--sf2); border: 1px solid transparent; cursor: pointer; transition: all 0.15s; }
+.r-item:hover { border-color: var(--br); background: var(--sf3); }
+.r-art { width: 40px; height: 40px; border-radius: 7px; background: var(--sf3); flex-shrink: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--txd); }
+.r-art img { width: 100%; height: 100%; object-fit: cover; }
+.r-meta { flex: 1; min-width: 0; }
+.r-title { font-size: 12px; font-weight: 500; color: var(--tx); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.r-sub { font-size: 10px; color: var(--txd); margin-top: 1px; }
+.add-btn { background: none; border: 1px solid var(--br); border-radius: 6px; padding: 4px 9px; color: var(--txm); font-size: 11px; cursor: pointer; transition: all 0.15s; white-space: nowrap; flex-shrink: 0; font-family: var(--font-b); }
+.add-btn:hover { border-color: var(--acd); color: var(--ac); background: color-mix(in srgb,var(--ac) 8%,transparent); }
+.add-btn.added { border-color: color-mix(in srgb,var(--ok) 50%,transparent); color: var(--ok); pointer-events: none; }
+.hint { background: var(--sf2); border: 1px solid var(--br); border-radius: var(--r); padding: 12px 14px; font-size: 12px; color: var(--txd); line-height: 1.7; }
+.hint strong { color: var(--txm); }
+
+/* url tab */
+.url-row { display: flex; gap: 7px; margin-bottom: 6px; }
+.url-status { font-size: 11px; color: var(--txd); min-height: 14px; }
+
+/* chat */
+.chat-msgs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-bottom: 4px; }
+.chat-msg { display: flex; gap: 7px; align-items: flex-start; }
+.chat-av { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; margin-top: 1px; }
+.chat-bd { flex: 1; min-width: 0; }
+.chat-meta { display: flex; align-items: baseline; gap: 5px; margin-bottom: 1px; }
+.chat-name { font-size: 11px; font-weight: 500; color: var(--txm); }
+.chat-time { font-size: 9px; color: var(--txd); }
+.chat-txt { font-size: 13px; color: var(--tx); line-height: 1.5; word-break: break-word; }
+.chat-sys { text-align: center; font-size: 10px; color: var(--txd); padding: 2px 0; }
+.chat-sys span { background: var(--sf2); padding: 2px 9px; border-radius: 12px; }
+.chat-input-row { display: flex; gap: 7px; margin-top: 8px; }
+.chat-input-row input { flex: 1; }
+.send-btn { background: var(--sf2); border: 1px solid var(--br); border-radius: var(--r); padding: 0 12px; color: var(--txm); cursor: pointer; font-size: 15px; transition: all 0.15s; }
+.send-btn:hover { border-color: var(--acd); color: var(--ac); }
+
+/* friends tab */
+.friends-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.friend-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: var(--r); background: var(--sf2); transition: background 0.15s; }
+.friend-item:hover { background: var(--sf3); }
+.f-av { width: 28px; height: 28px; border-radius: 50%; background: color-mix(in srgb,var(--ac) 20%,transparent); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.f-info { flex: 1; min-width: 0; }
+.f-name { font-size: 13px; color: var(--tx); font-weight: 500; }
+.f-status { font-size: 10px; color: var(--txd); margin-top: 1px; }
+.f-status.online { color: var(--ok); }
+.f-visit { background: none; border: 1px solid var(--br); border-radius: 6px; padding: 3px 9px; font-size: 11px; color: var(--txm); cursor: pointer; transition: all 0.15s; font-family: var(--font-b); white-space: nowrap; }
+.f-visit:hover { border-color: var(--acd); color: var(--ac); }
+.req-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--r); background: color-mix(in srgb,var(--ac) 8%,transparent); border: 1px solid color-mix(in srgb,var(--ac) 15%,transparent); }
+.req-item .f-name { font-size: 12px; }
+.req-acts { display: flex; gap: 5px; flex-shrink: 0; }
+.req-btn { border: none; border-radius: 6px; padding: 3px 8px; font-size: 11px; cursor: pointer; font-family: var(--font-b); transition: all 0.15s; }
+.req-btn.acc { background: color-mix(in srgb,var(--ok) 20%,transparent); color: var(--ok); border: 1px solid color-mix(in srgb,var(--ok) 30%,transparent); }
+.req-btn.dec { background: color-mix(in srgb,var(--danger) 15%,transparent); color: var(--danger); border: 1px solid color-mix(in srgb,var(--danger) 25%,transparent); }
+.add-friend-row { display: flex; gap: 7px; margin-top: 8px; }
+.add-friend-row input { flex: 1; }
+
+/* friend notification bubble */
+.notif-dot { width: 7px; height: 7px; background: var(--danger); border-radius: 50%; display: inline-block; margin-left: 4px; vertical-align: middle; }
+
+/* ── CHANGELOG ── */
+.cl-link { display: block; text-align: center; margin-top: 10px; font-size: 11px; color: var(--txd); cursor: pointer; letter-spacing: 0.05em; transition: color 0.2s; text-decoration: none; }
+.cl-link:hover { color: var(--txm); }
+.cl-link .cl-ver { color: var(--acd); font-weight: 500; margin-right: 4px; }
+
+.cl-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; }
+.cl-overlay.open { display: flex; }
+.cl-modal { background: var(--sf); border: 1px solid var(--br); border-radius: var(--rl); width: 100%; max-width: 440px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 24px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); animation: fadeUp 0.3s ease; }
+.cl-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid var(--br); flex-shrink: 0; }
+.cl-title { font-family: var(--font-h); font-size: 18px; font-weight: 600; color: var(--acg); }
+.cl-close { background: none; border: none; cursor: pointer; color: var(--txd); font-size: 20px; line-height: 1; padding: 2px 6px; border-radius: 6px; transition: all 0.15s; }
+.cl-close:hover { color: var(--tx); background: var(--sf2); }
+.cl-body { overflow-y: auto; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 20px; }
+.cl-entry { display: flex; flex-direction: column; gap: 8px; }
+.cl-entry-header { display: flex; align-items: baseline; gap: 10px; }
+.cl-version { font-family: monospace; font-size: 12px; font-weight: 700; color: var(--ac); background: color-mix(in srgb,var(--ac) 12%,transparent); border: 1px solid color-mix(in srgb,var(--ac) 20%,transparent); border-radius: 6px; padding: 2px 8px; flex-shrink: 0; }
+.cl-date { font-size: 11px; color: var(--txd); }
+.cl-items { display: flex; flex-direction: column; gap: 5px; }
+.cl-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--tx); line-height: 1.5; }
+.cl-tag { flex-shrink: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 4px; margin-top: 2px; text-transform: uppercase; }
+.cl-tag.new  { background: color-mix(in srgb,var(--ok) 15%,transparent); color: var(--ok); border: 1px solid color-mix(in srgb,var(--ok) 25%,transparent); }
+.cl-tag.fix  { background: color-mix(in srgb,#6a9fd8 15%,transparent); color: #6a9fd8; border: 1px solid color-mix(in srgb,#6a9fd8 25%,transparent); }
+.cl-tag.impr { background: color-mix(in srgb,var(--ac) 12%,transparent); color: var(--acd); border: 1px solid color-mix(in srgb,var(--ac) 20%,transparent); }
 </style>
 </head>
-<body data-theme="ember">
+<body data-theme="cabin">
 
-<div class="ambient ambient-1"></div>
-<div class="ambient ambient-2"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<canvas id="particles"></canvas>
+
 <div class="conn-bar" id="conn-bar"></div>
-<div id="connecting"><div class="spinner"></div><div class="conn-text" id="conn-text">Connecting…</div></div>
+<div id="connecting"><div class="spinner"></div><div style="font-size:13px;color:var(--txm)" id="conn-text">Connecting…</div></div>
 
-<!-- ═══ LANDING ═══ -->
-<div class="screen active" id="landing">
-  <div class="landing-inner">
+<!-- ════════════════════════════════ AUTH SCREEN ════════════════════════════ -->
+<div class="screen active" id="auth-screen">
+  <div class="auth-wrap">
     <div class="logo-block">
       <div class="logo-icon">🪵</div>
       <div class="logo-name">Hearth</div>
-      <div class="logo-tag">listen together, anywhere</div>
+      <div class="logo-sub">your room. your music. your people.</div>
     </div>
-
-    <div class="action-card">
-      <div class="theme-row">
-        <span class="theme-label">Theme:</span>
-        <div class="theme-swatch active" data-t="ember"   title="Ember"   onclick="setTheme('ember',this)"></div>
-        <div class="theme-swatch"        data-t="midnight" title="Midnight" onclick="setTheme('midnight',this)"></div>
-        <div class="theme-swatch"        data-t="forest"  title="Forest"  onclick="setTheme('forest',this)"></div>
-        <div class="theme-swatch"        data-t="sakura"  title="Sakura"  onclick="setTheme('sakura',this)"></div>
-        <div class="theme-swatch"        data-t="latte"   title="Latte"   onclick="setTheme('latte',this)"></div>
+    <div class="auth-card">
+      <div class="theme-strip">
+        <span class="theme-strip-label">Theme:</span>
+        <div class="th-dot on" data-t="cabin"       title="Cabin"       onclick="setTheme('cabin',this)"></div>
+        <div class="th-dot"    data-t="aquarium"    title="Aquarium"    onclick="setTheme('aquarium',this)"></div>
+        <div class="th-dot"    data-t="cottage"     title="Cottagecore" onclick="setTheme('cottage',this)"></div>
+        <div class="th-dot"    data-t="observatory" title="Observatory" onclick="setTheme('observatory',this)"></div>
+        <div class="th-dot"    data-t="mushroom"    title="Mushroom Grove" onclick="setTheme('mushroom',this)"></div>
       </div>
 
-      <div class="action-label">Create a room</div>
-      <input type="text" id="create-name" placeholder="Your name" maxlength="24" autocomplete="off">
-      <input type="text" id="create-room-name" placeholder="Room name (e.g. Sunday Vibes)" maxlength="32" autocomplete="off">
-      <button class="btn btn-primary" id="create-btn" onclick="createRoom()">Light the fire 🔥</button>
-      <div class="divider">or join existing</div>
-      <input type="text" id="join-name" placeholder="Your name" maxlength="24" autocomplete="off">
-      <input type="text" id="join-code" placeholder="Room code" maxlength="8" style="text-transform:uppercase;font-family:monospace;letter-spacing:0.1em;" autocomplete="off">
-      <button class="btn btn-ghost" id="join-btn" onclick="joinRoom()">Join room →</button>
-      <div class="error-msg" id="landing-error"></div>
+      <div id="auth-login-form">
+        <div class="auth-title">Sign in</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+          <input type="text" id="l-user" placeholder="Username" autocomplete="off">
+          <input type="password" id="l-pass" placeholder="Password">
+          <button class="btn btn-p" onclick="doLogin()">Enter the room</button>
+        </div>
+        <div class="div" style="margin-top:8px">new here?</div>
+        <button class="btn btn-g" onclick="showRegister()">Create account</button>
+        <div class="err" id="login-err"></div>
+      </div>
+
+      <div id="auth-reg-form" style="display:none">
+        <div class="auth-title">Create your account</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+          <input type="text" id="r-user" placeholder="Username (letters, numbers, _)" maxlength="20" autocomplete="off">
+          <input type="password" id="r-pass" placeholder="Password (min 4 chars)">
+          <button class="btn btn-p" onclick="doRegister()">Create account & room</button>
+        </div>
+        <div class="div" style="margin-top:8px">already have an account?</div>
+        <button class="btn btn-g" onclick="showLogin()">Sign in</button>
+        <div class="err" id="reg-err"></div>
+      </div>
+    </div>
+    <span class="cl-link" onclick="document.getElementById('cl-overlay').classList.add('open')">
+      <span class="cl-ver">v2.0</span>what's new
+    </span>
+  </div>
+</div>
+
+<!-- ════════════════════════ CHANGELOG MODAL ════════════════════════ -->
+<div class="cl-overlay" id="cl-overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="cl-modal">
+    <div class="cl-header">
+      <div class="cl-title">🪵 Changelog</div>
+      <button class="cl-close" onclick="document.getElementById('cl-overlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="cl-body">
+
+      <div class="cl-entry">
+        <div class="cl-entry-header">
+          <span class="cl-version">v2.0</span>
+          <span class="cl-date">March 2026</span>
+        </div>
+        <div class="cl-items">
+          <div class="cl-item"><span class="cl-tag new">new</span>Accounts — register, log in, stay signed in across sessions</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Permanent rooms — your room belongs to you forever, one per account</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Friends system — add friends, accept requests, see who's online and where</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Visit rooms — jump into a friend's room directly from the Friends tab</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Room decoration — wallpapers, mood text, draggable sticker widgets (candles, plants, clocks, notes…)</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>5 fully redesigned themes — Cabin, Aquarium, Cottagecore, Observatory, Mushroom Grove</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Floating particles per theme — sparkles, bubbles, flowers, stars</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Search now works — proxied through server, CORS issue gone for good</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Volume no longer resets to 100% when tracks skip</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Auto-skip now has a fallback timer so tracks always advance</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Reconnecting no longer creates a ghost room — you always rejoin the same room</div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-entry-header">
+          <span class="cl-version">v1.1</span>
+          <span class="cl-date">March 2026</span>
+        </div>
+        <div class="cl-items">
+          <div class="cl-item"><span class="cl-tag new">new</span>5 colour themes with font + palette changes</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Auto-reconnect with exponential backoff</div>
+          <div class="cl-item"><span class="cl-tag fix">fix</span>Server heartbeat kills ghost WebSocket connections</div>
+          <div class="cl-item"><span class="cl-tag impr">impr</span>Track ended deduplication — multiple clients no longer double-skip</div>
+          <div class="cl-item"><span class="cl-tag impr">impr</span>Queue remove correctly adjusts current index</div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-entry-header">
+          <span class="cl-version">v1.0</span>
+          <span class="cl-date">March 2026</span>
+        </div>
+        <div class="cl-items">
+          <div class="cl-item"><span class="cl-tag new">new</span>Real-time rooms via WebSocket — create or join with a code</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>SoundCloud playback synced across all listeners</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Shared queue — everyone can add and remove songs</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Shareable room links with ?room= URL parameter</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Live chat with avatars and timestamps</div>
+          <div class="cl-item"><span class="cl-tag new">new</span>Seek, skip, volume, progress bar controls</div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ═══ ROOM ═══ -->
-<div class="screen" id="room">
+<!-- ════════════════════════════════ ROOM SCREEN ════════════════════════════ -->
+<div class="screen" id="room-screen">
+  <div class="room-bg" id="room-bg"></div>
+  <div class="widget-layer" id="widget-layer"></div>
+
+  <!-- LEFT PANEL -->
   <div class="panel-left">
-    <div class="room-header">
-      <div class="room-header-top">
-        <span class="room-name-display" id="room-name-el"></span>
+    <div class="room-hdr">
+      <div class="room-hdr-top">
+        <span class="room-name" id="room-name-el">Room</span>
         <span class="badge"><span class="dot"></span><span id="member-count">1</span></span>
       </div>
-      <div class="room-id-row">
-        Code: <span class="room-id-code" id="room-code-el"></span>
-        <button class="copy-btn" onclick="copyLink()">⎘ copy link</button>
+      <div class="room-code-row">
+        Code: <span class="room-code" id="room-code-el"></span>
+        <button class="copy-btn" onclick="copyLink()">⎘ copy</button>
       </div>
     </div>
+    <div class="mood-row" id="mood-row"></div>
 
     <div class="room-theme-row">
-      <span class="theme-label">Theme:</span>
-      <div class="theme-swatch active" data-t="ember"    title="Ember"   onclick="setTheme('ember',this)"></div>
-      <div class="theme-swatch"        data-t="midnight" title="Midnight" onclick="setTheme('midnight',this)"></div>
-      <div class="theme-swatch"        data-t="forest"   title="Forest"  onclick="setTheme('forest',this)"></div>
-      <div class="theme-swatch"        data-t="sakura"   title="Sakura"  onclick="setTheme('sakura',this)"></div>
-      <div class="theme-swatch"        data-t="latte"    title="Latte"   onclick="setTheme('latte',this)"></div>
+      <span class="theme-strip-label">Theme:</span>
+      <div class="th-dot" data-t="cabin"       onclick="setTheme('cabin',this)"></div>
+      <div class="th-dot" data-t="aquarium"    onclick="setTheme('aquarium',this)"></div>
+      <div class="th-dot" data-t="cottage"     onclick="setTheme('cottage',this)"></div>
+      <div class="th-dot" data-t="observatory" onclick="setTheme('observatory',this)"></div>
+      <div class="th-dot" data-t="mushroom"    onclick="setTheme('mushroom',this)"></div>
     </div>
 
-    <div class="section-label">Listening now</div>
-    <div class="listeners-list" id="listeners-list"></div>
+    <div class="sec-label">Listening now</div>
+    <div class="listeners" id="listeners-el"></div>
 
     <div class="queue-area">
-      <div class="section-label">Queue</div>
-      <div class="queue-list" id="queue-list"></div>
+      <div class="sec-label">Queue</div>
+      <div class="queue-list" id="queue-el"></div>
     </div>
   </div>
 
+  <!-- CENTER PANEL -->
   <div class="panel-center">
     <div class="player-area">
-      <div class="np-header">
+      <div class="np-row">
         <div class="np-art" id="np-art">
-          <div class="np-placeholder" id="np-ph">🎵</div>
+          <div class="np-ph" id="np-ph">🎵</div>
           <img id="np-img" src="" alt="">
         </div>
         <div class="np-meta">
           <div class="np-title" id="np-title">Nothing playing</div>
-          <div class="np-artist" id="np-artist">Add songs to start listening</div>
-          <div class="np-added" id="np-added"></div>
+          <div class="np-artist" id="np-artist">Add songs to start</div>
+          <div class="np-by" id="np-by"></div>
         </div>
       </div>
-
-      <div class="progress-row">
-        <span class="time-label" id="t-cur">0:00</span>
-        <div class="progress-bar" id="prog-bar" onclick="onSeek(event)">
-          <div class="progress-fill" id="prog-fill" style="width:0%"></div>
-        </div>
-        <span class="time-label right" id="t-tot">0:00</span>
+      <div class="prog-row">
+        <span class="prog-time" id="t-cur">0:00</span>
+        <div class="prog-bar" id="prog-bar" onclick="onSeek(event)"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+        <span class="prog-time r" id="t-tot">0:00</span>
       </div>
-
-      <div class="controls-row">
-        <button class="ctrl-btn" onclick="send({type:'prev_track'})">⏮</button>
-        <button class="ctrl-btn play-pause" id="play-btn" onclick="send({type:'toggle_play'})">▶</button>
-        <button class="ctrl-btn" onclick="send({type:'next_track'})">⏭</button>
+      <div class="ctrls">
+        <button class="ctrl" onclick="send({type:'prev_track'})">⏮</button>
+        <button class="ctrl pp" id="play-btn" onclick="send({type:'toggle_play'})">▶</button>
+        <button class="ctrl" onclick="send({type:'next_track'})">⏭</button>
       </div>
-
-      <div class="volume-row">
-        <span class="vol-icon">🔈</span>
-        <input type="range" id="vol-slider" min="0" max="100" value="80" oninput="onVol(this.value)">
-        <span class="vol-icon">🔊</span>
+      <div class="vol-row">
+        <span class="vol-ic">🔈</span>
+        <input type="range" id="vol" min="0" max="100" value="80" oninput="onVol(this.value)">
+        <span class="vol-ic">🔊</span>
       </div>
     </div>
 
-    <div class="sc-wrap">
-      <iframe id="sc-iframe" allow="autoplay" src="about:blank" width="1" height="1"></iframe>
-    </div>
+    <div class="sc-wrap"><iframe id="sc-iframe" allow="autoplay" src="about:blank" width="1" height="1"></iframe></div>
 
     <div class="panel-body">
       <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('search',this)">Search</button>
-        <button class="tab-btn" onclick="switchTab('url',this)">Add URL</button>
-        <button class="tab-btn" onclick="switchTab('chat',this)">Chat</button>
+        <button class="tab-btn on"  onclick="switchTab('search',this)">Search</button>
+        <button class="tab-btn"     onclick="switchTab('url',this)">Add URL</button>
+        <button class="tab-btn"     onclick="switchTab('chat',this)">Chat</button>
+        <button class="tab-btn"     onclick="switchTab('friends',this)" id="friends-tab-btn">Friends</button>
       </div>
 
-      <div class="tab-panel active" id="tab-search">
+      <!-- SEARCH -->
+      <div class="tab-p on" id="tab-search">
         <div class="search-bar">
-          <input type="text" id="search-input" placeholder="Search SoundCloud…" onkeydown="if(event.key==='Enter')doSearch()">
-          <button class="btn-sm accent" onclick="doSearch()">Search</button>
+          <input type="text" id="search-in" placeholder="Search SoundCloud…" onkeydown="if(event.key==='Enter')doSearch()">
+          <button class="btn-sm ac" onclick="doSearch()">Search</button>
         </div>
-        <div class="search-results" id="search-results">
-          <div class="hint-box">Search for any artist, track, or mix — or use the <strong>Add URL</strong> tab to paste a SoundCloud link directly.</div>
+        <div class="results" id="results-el">
+          <div class="hint">Search for any artist, track, or mix. Or use <strong>Add URL</strong> to paste a SoundCloud link.</div>
         </div>
       </div>
 
-      <div class="tab-panel" id="tab-url">
-        <div style="margin-bottom:10px;color:var(--text-mid);font-size:13px;line-height:1.6;">
-          Paste any SoundCloud track or playlist URL to add it to the shared queue.
-        </div>
+      <!-- URL -->
+      <div class="tab-p" id="tab-url">
+        <div style="margin-bottom:10px;color:var(--txm);font-size:13px;line-height:1.6">Paste any SoundCloud track URL to add it to the shared queue.</div>
         <div class="url-row">
-          <input type="text" id="url-input" placeholder="https://soundcloud.com/…" style="flex:1" onkeydown="if(event.key==='Enter')addUrl()">
-          <button class="btn-sm accent" onclick="addUrl()">Add</button>
+          <input type="text" id="url-in" placeholder="https://soundcloud.com/…" style="flex:1" onkeydown="if(event.key==='Enter')addUrl()">
+          <button class="btn-sm ac" onclick="addUrl()">Add</button>
         </div>
         <div class="url-status" id="url-status"></div>
       </div>
 
-      <div class="tab-panel" id="tab-chat">
+      <!-- CHAT -->
+      <div class="tab-p" id="tab-chat">
         <div class="chat-msgs" id="chat-msgs"></div>
         <div class="chat-input-row">
-          <input type="text" id="chat-input" placeholder="Say something…" maxlength="200" onkeydown="if(event.key==='Enter')sendChat()">
+          <input type="text" id="chat-in" placeholder="Say something…" maxlength="200" onkeydown="if(event.key==='Enter')sendChat()">
           <button class="send-btn" onclick="sendChat()">↑</button>
         </div>
       </div>
+
+      <!-- FRIENDS -->
+      <div class="tab-p" id="tab-friends">
+        <div class="friends-list" id="friends-el"></div>
+        <div class="add-friend-row">
+          <input type="text" id="friend-in" placeholder="Add friend by username…" maxlength="20" onkeydown="if(event.key==='Enter')addFriend()">
+          <button class="btn-sm ac" onclick="addFriend()">Add</button>
+        </div>
+        <div class="err" id="friend-err" style="margin-top:4px"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DECOR TOGGLE (owner only) -->
+<button class="decor-toggle" id="decor-toggle-btn" onclick="toggleDecorPanel()">🎨</button>
+
+<!-- DECOR PANEL -->
+<div class="decor-panel" id="decor-panel">
+  <h3>Decorate Room</h3>
+
+  <div>
+    <div class="decor-sec">Room Name</div>
+    <div style="display:flex;gap:6px">
+      <input type="text" id="room-name-in" placeholder="Room name…" style="flex:1;font-size:12px;padding:7px 10px" maxlength="32">
+      <button class="btn-sm ac" onclick="saveRoomName()" style="flex-shrink:0">✓</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="decor-sec">Mood</div>
+    <div class="mood-input-row">
+      <input type="text" id="mood-in" placeholder="e.g. chill sunday ☕" maxlength="40" style="font-size:12px;padding:7px 10px">
+      <button class="btn-sm ac" onclick="saveMood()">✓</button>
+    </div>
+  </div>
+
+  <div>
+    <div class="decor-sec">Wallpaper</div>
+    <div class="wall-grid" id="wall-grid">
+      <div class="wall-opt" data-w="cabin"      onclick="setWallpaper('cabin',this)"      title="Wood"></div>
+      <div class="wall-opt" data-w="stars"      onclick="setWallpaper('stars',this)"      title="Stars"></div>
+      <div class="wall-opt" data-w="forest"     onclick="setWallpaper('forest',this)"     title="Forest"></div>
+      <div class="wall-opt" data-w="aurora"     onclick="setWallpaper('aurora',this)"     title="Aurora"></div>
+      <div class="wall-opt" data-w="bubbly"     onclick="setWallpaper('bubbly',this)"     title="Ocean"></div>
+      <div class="wall-opt" data-w="roses"      onclick="setWallpaper('roses',this)"      title="Roses"></div>
+      <div class="wall-opt" data-w="linen"      onclick="setWallpaper('linen',this)"      title="Linen"></div>
+      <div class="wall-opt" data-w="moonlight"  onclick="setWallpaper('moonlight',this)"  title="Moon"></div>
+      <div class="wall-opt" data-w="spores"     onclick="setWallpaper('spores',this)"     title="Spores"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="decor-sec">Stickers & Widgets</div>
+    <div class="sticker-grid">
+      <div class="sticker-opt" onclick="addWidget('sticker','🕯️')">🕯️</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','☕')">☕</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🌙')">🌙</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🪴')">🪴</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','📚')">📚</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🎸')">🎸</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🌿')">🌿</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🐾')">🐾</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','⭐')">⭐</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🍂')">🍂</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🎐')">🎐</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🧸')">🧸</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🌸')">🌸</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🦋')">🦋</div>
+      <div class="sticker-opt" onclick="addWidget('sticker','🌊')">🌊</div>
+      <div class="sticker-opt" onclick="addWidget('clock','')">🕐 Clock</div>
+      <div class="sticker-opt" onclick="addNoteWidget()">📝 Note</div>
     </div>
   </div>
 </div>
@@ -490,545 +747,640 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
 <script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
 // ═══════════════════════════════════════════════
+//  PARTICLES
+// ═══════════════════════════════════════════════
+const THEME_PARTICLES = {
+  cabin:       { char: '✦', color: '#e8a44a', count: 18, speed: 0.3 },
+  aquarium:    { char: '◉', color: '#00d4ff', count: 22, speed: 0.2 },
+  cottage:     { char: '❀', color: '#8b5e3c', count: 16, speed: 0.25 },
+  observatory: { char: '★', color: '#c8a84a', count: 30, speed: 0.15 },
+  mushroom:    { char: '✦', color: '#d4a830', count: 14, speed: 0.2 }
+};
+let particles = [], particleCtx, particleCanvas, particleRAF;
+
+function initParticles(theme) {
+  particleCanvas = document.getElementById('particles');
+  particleCtx = particleCanvas.getContext('2d');
+  cancelAnimationFrame(particleRAF);
+  particleCanvas.width  = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
+  const cfg = THEME_PARTICLES[theme] || THEME_PARTICLES.cabin;
+  particles = Array.from({length: cfg.count}, () => ({
+    x: Math.random() * particleCanvas.width,
+    y: Math.random() * particleCanvas.height,
+    size: 8 + Math.random() * 10,
+    speed: cfg.speed * (0.5 + Math.random()),
+    opacity: 0.1 + Math.random() * 0.4,
+    drift: (Math.random() - 0.5) * 0.3,
+    char: cfg.char, color: cfg.color
+  }));
+  function tick() {
+    particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+    particles.forEach(p => {
+      particleCtx.font = `${p.size}px serif`;
+      particleCtx.fillStyle = p.color;
+      particleCtx.globalAlpha = p.opacity;
+      particleCtx.fillText(p.char, p.x, p.y);
+      p.y -= p.speed; p.x += p.drift;
+      if (p.y < -20) { p.y = particleCanvas.height + 20; p.x = Math.random() * particleCanvas.width; }
+      if (p.x < -20) p.x = particleCanvas.width + 20;
+      if (p.x > particleCanvas.width + 20) p.x = -20;
+    });
+    particleCtx.globalAlpha = 1;
+    particleRAF = requestAnimationFrame(tick);
+  }
+  tick();
+}
+window.addEventListener('resize', () => {
+  if (particleCanvas) { particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight; }
+});
+
+// ═══════════════════════════════════════════════
 //  THEME
 // ═══════════════════════════════════════════════
+const THEME_NAMES = { cabin:'🪵 Cabin', aquarium:'🌊 Aquarium', cottage:'🌸 Cottagecore', observatory:'🌙 Observatory', mushroom:'🍄 Mushroom Grove' };
 function setTheme(name, el) {
   document.body.setAttribute('data-theme', name);
   localStorage.setItem('hearth-theme', name);
-  document.querySelectorAll('.theme-swatch').forEach(s => {
-    s.classList.toggle('active', s.dataset.t === name);
-  });
+  document.querySelectorAll('.th-dot').forEach(d => d.classList.toggle('on', d.dataset.t === name));
+  initParticles(name);
 }
-// Restore saved theme
-(function() {
-  const saved = localStorage.getItem('hearth-theme') || 'ember';
-  document.body.setAttribute('data-theme', saved);
-  document.querySelectorAll('.theme-swatch').forEach(s => {
-    s.classList.toggle('active', s.dataset.t === saved);
-  });
+(function initTheme() {
+  const t = localStorage.getItem('hearth-theme') || 'cabin';
+  document.body.setAttribute('data-theme', t);
+  document.querySelectorAll('.th-dot').forEach(d => d.classList.toggle('on', d.dataset.t === t));
+  initParticles(t);
 })();
 
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-const WS_URL = (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host;
-
+const WS_URL = (location.protocol==='https:'?'wss://':'ws://')+location.host;
 const S = {
-  ws: null,
-  myWsId: null, myName: '', myColor: '', myEmoji: '',
-  roomCode: '', roomName: '',
-  members: [], queue: [],
-  playback: { currentIndex: -1, isPlaying: false, position: 0, startedAt: null },
-
-  // SC widget
+  ws: null, token: null, username: null, myRoomCode: null,
+  myWsId: null, myColor: '', myEmoji: '',
+  roomCode: '', members: [], queue: [],
+  playback: {currentIndex:-1,isPlaying:false,position:0,startedAt:null},
   scWidget: null, scReady: false, scCurrentUrl: null,
-  localPos: 0, localDur: 0,
-  volume: 80,  // ← track volume independently
-
-  // reconnect
-  reconnectTimer: null, reconnectAttempts: 0,
-  pendingJoin: null,
-
-  // auto-skip fallback timer
-  skipTimer: null,
+  localPos: 0, localDur: 0, volume: 80,
+  skipTimer: null, reconnectTimer: null, reconnectAttempts: 0,
+  pendingJoin: null, friends: [], friendRequests: [], decoration: {}
 };
 
 // ═══════════════════════════════════════════════
 //  UTILS
 // ═══════════════════════════════════════════════
-function fmt(ms) {
-  if (!ms || ms < 0) return '0:00';
-  const s = Math.floor(ms / 1000);
-  return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+function fmt(ms) { if(!ms||ms<0)return'0:00'; const s=Math.floor(ms/1000); return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
+function toast(msg,dur=2500) { const el=document.getElementById('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),dur); }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function switchTab(name,btn) {
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.tab-p').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('tab-'+name).classList.add('on');
+  if(name==='friends') { loadFriends(); document.getElementById('friends-tab-btn').innerHTML='Friends'; }
 }
-function toast(msg, dur=2500) {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.classList.add('show');
-  clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), dur);
+function api(method,path,body) {
+  return fetch(path,{method,headers:{'Content-Type':'application/json','x-token':S.token||''},body:body?JSON.stringify(body):undefined}).then(r=>r.json());
 }
-function switchTab(name, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('tab-'+name).classList.add('active');
+function showLogin()    { document.getElementById('auth-login-form').style.display=''; document.getElementById('auth-reg-form').style.display='none'; }
+function showRegister() { document.getElementById('auth-login-form').style.display='none'; document.getElementById('auth-reg-form').style.display=''; }
+
+// ═══════════════════════════════════════════════
+//  AUTH
+// ═══════════════════════════════════════════════
+async function doLogin() {
+  const username=document.getElementById('l-user').value.trim();
+  const password=document.getElementById('l-pass').value;
+  document.getElementById('login-err').textContent='';
+  if(!username||!password){document.getElementById('login-err').textContent='Fill in all fields';return;}
+  const btn=document.querySelector('#auth-login-form .btn-p'); btn.disabled=true; btn.textContent='Signing in…';
+  const r=await api('POST','/api/login',{username,password});
+  btn.disabled=false; btn.textContent='Enter the room';
+  if(r.error){document.getElementById('login-err').textContent=r.error;return;}
+  S.token=r.token; S.username=r.username; S.myRoomCode=r.roomCode;
+  localStorage.setItem('hearth-token',r.token);
+  enterApp();
 }
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+async function doRegister() {
+  const username=document.getElementById('r-user').value.trim();
+  const password=document.getElementById('r-pass').value;
+  document.getElementById('reg-err').textContent='';
+  if(!username||!password){document.getElementById('reg-err').textContent='Fill in all fields';return;}
+  const btn=document.querySelector('#auth-reg-form .btn-p'); btn.disabled=true; btn.textContent='Creating…';
+  const r=await api('POST','/api/register',{username,password});
+  btn.disabled=false; btn.textContent='Create account & room';
+  if(r.error){document.getElementById('reg-err').textContent=r.error;return;}
+  S.token=r.token; S.username=r.username; S.myRoomCode=r.roomCode;
+  localStorage.setItem('hearth-token',r.token);
+  enterApp();
+}
+
+async function tryAutoLogin() {
+  const token=localStorage.getItem('hearth-token');
+  if(!token) return false;
+  S.token=token;
+  const r=await api('GET','/api/me');
+  if(r.error) { localStorage.removeItem('hearth-token'); return false; }
+  S.username=r.username; S.myRoomCode=r.roomCode;
+  S.friends=r.friends||[]; S.friendRequests=r.friendRequests||[];
+  return true;
+}
+
+function enterApp() {
+  document.getElementById('auth-screen').classList.remove('active');
+  document.getElementById('room-screen').classList.add('active');
+  // Check URL for a room to join, otherwise join own room
+  const params=new URLSearchParams(location.search);
+  const targetRoom=params.get('room')||S.myRoomCode;
+  connectWS(targetRoom);
 }
 
 // ═══════════════════════════════════════════════
 //  WEBSOCKET
 // ═══════════════════════════════════════════════
-function connect(joinMsg) {
-  const ct = document.getElementById('connecting');
-  ct.classList.add('show');
-  document.getElementById('conn-text').textContent = 'Connecting to Hearth…';
-
-  if (S.ws) { S.ws.onclose = null; S.ws.onerror = null; try { S.ws.close(); } catch(e) {} }
-
-  S.pendingJoin = joinMsg;
-  const ws = new WebSocket(WS_URL);
-  S.ws = ws;
-
-  ws.onopen = () => {
-    S.reconnectAttempts = 0;
-    hideConnBar();
-    ws.send(JSON.stringify(joinMsg));
+function connectWS(roomCode) {
+  document.getElementById('connecting').classList.add('show');
+  if(S.ws){S.ws.onclose=null;S.ws.onerror=null;try{S.ws.close();}catch(e){}}
+  S.pendingJoin={token:S.token,roomCode};
+  const ws=new WebSocket(WS_URL);
+  S.ws=ws;
+  ws.onopen=()=>{
+    S.reconnectAttempts=0; hideConnBar();
+    ws.send(JSON.stringify({type:'auth',token:S.token}));
   };
-
-  ws.onmessage = (e) => {
-    let m; try { m = JSON.parse(e.data); } catch { return; }
-    onMsg(m);
-  };
-
-  ws.onclose = () => {
-    if (S.roomCode) scheduleReconnect();
-  };
-
-  ws.onerror = () => { /* onclose fires */ };
-
-  // App-level keepalive (independent of server heartbeat)
+  ws.onmessage=e=>{let m;try{m=JSON.parse(e.data);}catch{return;} onMsg(m);};
+  ws.onclose=()=>{ if(S.roomCode) scheduleReconnect(); };
+  ws.onerror=()=>{};
   clearInterval(ws._ping);
-  ws._ping = setInterval(() => {
-    if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'ping' }));
-  }, 20000);
+  ws._ping=setInterval(()=>{ if(ws.readyState===WebSocket.OPEN) ws.send(JSON.stringify({type:'ping'})); },20000);
 }
 
 function scheduleReconnect() {
-  if (S.reconnectTimer) return;
+  if(S.reconnectTimer) return;
   S.reconnectAttempts++;
-  const delay = Math.min(1000 * Math.pow(1.5, S.reconnectAttempts - 1), 8000);
-  connBar(`Connection lost — reconnecting in ${Math.round(delay/1000)}s…`, 'warn');
-  S.reconnectTimer = setTimeout(() => {
-    S.reconnectTimer = null;
-    connBar('Reconnecting…', 'warn');
-    // CRITICAL: always rejoin the SAME room with the same code
-    connect({ ...S.pendingJoin, roomCode: S.roomCode, roomName: undefined, rejoin: true });
-  }, delay);
+  const delay=Math.min(1000*Math.pow(1.5,S.reconnectAttempts-1),8000);
+  connBar(`Connection lost — reconnecting in ${Math.round(delay/1000)}s…`,'warn');
+  S.reconnectTimer=setTimeout(()=>{
+    S.reconnectTimer=null;
+    connBar('Reconnecting…','warn');
+    connectWS(S.roomCode||S.myRoomCode); // always rejoin same room
+  },delay);
 }
 
-function connBar(msg, type) {
-  const el = document.getElementById('conn-bar');
-  el.textContent = msg; el.className = 'conn-bar ' + (type||'');
-}
-function hideConnBar() { document.getElementById('conn-bar').className = 'conn-bar'; }
-function send(msg) { if (S.ws && S.ws.readyState === WebSocket.OPEN) S.ws.send(JSON.stringify(msg)); }
+function connBar(msg,type){const el=document.getElementById('conn-bar');el.textContent=msg;el.className='conn-bar '+(type||'');}
+function hideConnBar(){document.getElementById('conn-bar').className='conn-bar';}
+function send(msg){if(S.ws&&S.ws.readyState===WebSocket.OPEN)S.ws.send(JSON.stringify(msg));}
 
 // ═══════════════════════════════════════════════
 //  SERVER MESSAGES
 // ═══════════════════════════════════════════════
 function onMsg(msg) {
   switch(msg.type) {
+    case 'auth_ok':
+      send({type:'join_room',roomCode:S.pendingJoin.roomCode});
+      break;
 
-    case 'room_snapshot': {
+    case 'room_snapshot':
       document.getElementById('connecting').classList.remove('show');
       hideConnBar();
-      S.myWsId   = msg.yourWsId;
-      S.myColor  = msg.yourColor;
-      S.myEmoji  = msg.yourEmoji;
-      S.roomCode = msg.roomCode;
-      S.roomName = msg.roomName;
-      S.members  = msg.members;
-      S.queue    = msg.queue;
-
-      document.getElementById('landing').classList.remove('active');
-      document.getElementById('room').classList.add('active');
-
-      document.getElementById('room-name-el').textContent = S.roomName;
-      document.getElementById('room-code-el').textContent = S.roomCode;
-      renderMembers();
-      renderQueue();
-      applyPlayback(msg.playback, true);
-      if (!S.scWidget) setupSC();
+      S.myWsId=msg.yourWsId; S.myColor=msg.yourColor; S.myEmoji=msg.yourEmoji;
+      S.roomCode=msg.roomCode; S.members=msg.members; S.queue=msg.queue;
+      S.decoration=msg.decoration||{};
+      applyDecoration(S.decoration);
+      renderMembers(); renderQueue();
+      applyPlayback(msg.playback,true);
+      if(!S.scWidget) setupSC();
+      // Show decor button only for room owner
+      document.getElementById('decor-toggle-btn').style.display = msg.owner===S.username ? 'block' : 'none';
       break;
-    }
 
     case 'member_joined':
-      if (!S.members.find(m => m.wsId === msg.member.wsId)) {
-        S.members.push(msg.member); renderMembers();
-      }
+      if(!S.members.find(m=>m.wsId===msg.member.wsId)){S.members.push(msg.member);renderMembers();}
       break;
-
     case 'member_left':
-      S.members = S.members.filter(m => m.wsId !== msg.wsId);
-      renderMembers();
-      break;
-
+      S.members=S.members.filter(m=>m.wsId!==msg.wsId); renderMembers(); break;
     case 'queue_add':
-      S.queue.push(msg.item);
-      renderQueue();
-      if (msg.item.addedBy !== S.myName) toast(`${msg.item.addedBy} added "${msg.item.title}"`);
-      break;
-
+      S.queue.push(msg.item); renderQueue();
+      if(msg.item.addedBy!==S.username) toast(`${msg.item.addedBy} added "${msg.item.title}"`); break;
     case 'queue_remove':
-      S.queue = S.queue.filter(i => i.id !== msg.itemId);
-      renderQueue();
-      break;
-
+      S.queue=S.queue.filter(i=>i.id!==msg.itemId); renderQueue(); break;
     case 'playback_update':
-      applyPlayback(msg.playback, false);
-      break;
-
-    case 'chat':      addChatMsg(msg); break;
+      applyPlayback(msg.playback,false); break;
+    case 'decoration_update':
+      S.decoration=msg.decoration; applyDecoration(msg.decoration); break;
+    case 'chat': addChatMsg(msg); break;
     case 'chat_system': addSysMsg(msg.text); break;
-
+    case 'friend_request':
+      S.friendRequests.push(msg.from);
+      document.getElementById('friends-tab-btn').innerHTML='Friends<span class="notif-dot"></span>';
+      toast(`${msg.from} sent you a friend request`); break;
+    case 'friend_accepted':
+      S.friends.push(msg.username); toast(`You and ${msg.username} are now friends! 🎉`); break;
     case 'error':
       document.getElementById('connecting').classList.remove('show');
-      document.getElementById('landing-error').textContent = msg.message;
-      document.getElementById('create-btn').disabled = false;
-      document.getElementById('join-btn').disabled = false;
-      break;
-
+      toast(msg.message); break;
     case 'pong': break;
   }
 }
 
 // ═══════════════════════════════════════════════
-//  LANDING
+//  DECORATION
 // ═══════════════════════════════════════════════
-function createRoom() {
-  const name = document.getElementById('create-name').value.trim();
-  const rname = document.getElementById('create-room-name').value.trim();
-  document.getElementById('landing-error').textContent = '';
-  if (!name)  { document.getElementById('landing-error').textContent = 'Enter your name'; return; }
-  if (!rname) { document.getElementById('landing-error').textContent = 'Give the room a name'; return; }
-  S.myName = name;
-  document.getElementById('create-btn').disabled = true;
-  connect({ type: 'join', userName: name, roomName: rname });
+function applyDecoration(dec) {
+  if(dec.roomName) document.getElementById('room-name-el').textContent=dec.roomName;
+  if(dec.mood!==undefined) document.getElementById('mood-row').textContent=dec.mood||'';
+  if(dec.wallpaper) {
+    document.getElementById('room-screen').setAttribute('data-wallpaper',dec.wallpaper);
+    document.querySelectorAll('.wall-opt').forEach(w=>w.classList.toggle('on',w.dataset.w===dec.wallpaper));
+  }
+  if(dec.widgets) renderWidgets(dec.widgets);
 }
 
-function joinRoom() {
-  const name = document.getElementById('join-name').value.trim();
-  const code = document.getElementById('join-code').value.trim().toUpperCase();
-  document.getElementById('landing-error').textContent = '';
-  if (!name) { document.getElementById('landing-error').textContent = 'Enter your name'; return; }
-  if (code.length < 4) { document.getElementById('landing-error').textContent = 'Enter a valid room code'; return; }
-  S.myName = name;
-  document.getElementById('join-btn').disabled = true;
-  connect({ type: 'join', userName: name, roomCode: code });
+function setWallpaper(name,el) {
+  document.getElementById('room-screen').setAttribute('data-wallpaper',name);
+  document.querySelectorAll('.wall-opt').forEach(w=>w.classList.toggle('on',w.dataset.w===name));
+  S.decoration.wallpaper=name;
+  send({type:'update_decoration',decoration:{wallpaper:name}});
 }
 
-function copyLink() {
-  const url = `${location.origin}${location.pathname}?room=${S.roomCode}`;
-  navigator.clipboard.writeText(url).then(() => toast('Room link copied! 🔗'));
+function saveRoomName() {
+  const val=document.getElementById('room-name-in').value.trim();
+  if(!val) return;
+  S.decoration.roomName=val;
+  send({type:'update_decoration',decoration:{roomName:val}});
+  document.getElementById('room-name-in').value='';
+  toast('Room name updated!');
+}
+
+function saveMood() {
+  const val=document.getElementById('mood-in').value.trim();
+  S.decoration.mood=val;
+  send({type:'update_decoration',decoration:{mood:val}});
+  document.getElementById('mood-in').value='';
+}
+
+// ── STICKER WIDGETS ──
+let dragWidget=null, dragOffX=0, dragOffY=0;
+
+function addWidget(type,data) {
+  const w={id:Date.now()+'',type,data,x:120+Math.random()*200,y:100+Math.random()*200};
+  const widgets=[...(S.decoration.widgets||[]),w];
+  S.decoration.widgets=widgets;
+  send({type:'update_decoration',decoration:{widgets}});
+}
+
+function addNoteWidget() {
+  const text=prompt('Note text:','');
+  if(!text) return;
+  addWidget('note',text);
+}
+
+function renderWidgets(widgets) {
+  const layer=document.getElementById('widget-layer');
+  layer.innerHTML='';
+  (widgets||[]).forEach(w=>{
+    const div=document.createElement('div');
+    div.className=`widget type-${w.type}`;
+    div.style.left=w.x+'px'; div.style.top=w.y+'px';
+    div.dataset.id=w.id;
+    const inner=document.createElement('div');
+    inner.className='w-inner';
+    if(w.type==='sticker') inner.textContent=w.data;
+    else if(w.type==='note') inner.textContent=w.data;
+    else if(w.type==='clock') { inner.textContent=getTime(); setInterval(()=>{inner.textContent=getTime();},1000); }
+    div.appendChild(inner);
+    // delete button
+    const del=document.createElement('button');
+    del.className='w-delete'; del.textContent='✕';
+    del.onclick=(e)=>{ e.stopPropagation(); removeWidget(w.id); };
+    div.appendChild(del);
+    // drag
+    div.addEventListener('mousedown',e=>{
+      if(e.target===del) return;
+      dragWidget=div; dragOffX=e.clientX-div.getBoundingClientRect().left; dragOffY=e.clientY-div.getBoundingClientRect().top;
+      div.style.zIndex=99;
+    });
+    layer.appendChild(div);
+  });
+}
+
+document.addEventListener('mousemove',e=>{
+  if(!dragWidget) return;
+  dragWidget.style.left=(e.clientX-dragOffX)+'px';
+  dragWidget.style.top=(e.clientY-dragOffY)+'px';
+});
+document.addEventListener('mouseup',()=>{
+  if(!dragWidget) return;
+  // Save new position if owner
+  const id=dragWidget.dataset.id;
+  const widgets=(S.decoration.widgets||[]).map(w=>{
+    if(w.id===id) return{...w,x:parseInt(dragWidget.style.left),y:parseInt(dragWidget.style.top)};
+    return w;
+  });
+  S.decoration.widgets=widgets;
+  if(S.roomCode) send({type:'update_decoration',decoration:{widgets}});
+  dragWidget.style.zIndex='';
+  dragWidget=null;
+});
+
+function removeWidget(id) {
+  const widgets=(S.decoration.widgets||[]).filter(w=>w.id!==id);
+  S.decoration.widgets=widgets;
+  send({type:'update_decoration',decoration:{widgets}});
+}
+
+function getTime() {
+  const now=new Date();
+  return`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+}
+
+function toggleDecorPanel() {
+  document.getElementById('decor-panel').classList.toggle('open');
 }
 
 // ═══════════════════════════════════════════════
 //  RENDER
 // ═══════════════════════════════════════════════
 function renderMembers() {
-  document.getElementById('member-count').textContent = S.members.length;
-  document.getElementById('listeners-list').innerHTML = S.members.map(m => `
-    <div class="listener-item">
-      <div class="avatar" style="background:${m.color}22;color:${m.color}">${m.emoji}</div>
-      <span class="listener-name">${esc(m.name)}${m.wsId===S.myWsId?'<span class="you-tag">you</span>':''}</span>
+  document.getElementById('member-count').textContent=S.members.length;
+  document.getElementById('listeners-el').innerHTML=S.members.map(m=>`
+    <div class="listener">
+      <div class="av" style="background:${m.color}22;color:${m.color}">${m.emoji}</div>
+      <span class="listener-name">${esc(m.username)}${m.wsId===S.myWsId?'<span class="you-tag">you</span>':''}</span>
     </div>`).join('');
 }
 
 function renderQueue() {
-  const el = document.getElementById('queue-list');
-  if (!S.queue.length) {
-    el.innerHTML = `<div class="empty-queue"><div class="eq-icon">🎵</div><p>Queue is empty.<br>Search or paste a URL to add songs.</p></div>`;
-    setNowPlaying(null);
-    return;
-  }
-  el.innerHTML = S.queue.map((item, i) => `
-    <div class="queue-item ${i===S.playback.currentIndex?'now-playing':''}" onclick="send({type:'play_index',index:${i}})">
-      <div class="queue-thumb">${item.art?`<img src="${esc(item.art)}" alt="">`:'🎵'}</div>
-      <div class="queue-meta">
-        <div class="queue-title">${esc(item.title)}</div>
-        <div class="queue-sub">${esc(item.artist)}</div>
-      </div>
-      <div class="now-icon"><span></span><span></span><span></span></div>
-      <button class="queue-remove" onclick="event.stopPropagation();send({type:'queue_remove',itemId:'${item.id}'})" title="Remove">✕</button>
+  const el=document.getElementById('queue-el');
+  if(!S.queue.length) { el.innerHTML=`<div class="q-empty"><div class="qei">🎵</div><p>Queue is empty.<br>Search or paste a URL.</p></div>`; setNP(null); return; }
+  el.innerHTML=S.queue.map((item,i)=>`
+    <div class="q-item ${i===S.playback.currentIndex?'playing':''}" onclick="send({type:'play_index',index:${i}})">
+      <div class="q-thumb">${item.art?`<img src="${esc(item.art)}" alt="">`:'🎵'}</div>
+      <div class="q-meta"><div class="q-title">${esc(item.title)}</div><div class="q-sub">${esc(item.artist)}</div></div>
+      <div class="eq-icon"><span></span><span></span><span></span></div>
+      <button class="q-rm" onclick="event.stopPropagation();send({type:'queue_remove',itemId:'${item.id}'})" title="Remove">✕</button>
     </div>`).join('');
-  setNowPlaying(S.queue[S.playback.currentIndex] || null);
+  setNP(S.queue[S.playback.currentIndex]||null);
 }
 
-function setNowPlaying(item) {
-  const img = document.getElementById('np-img');
-  const ph  = document.getElementById('np-ph');
-  if (!item) {
-    document.getElementById('np-title').textContent  = 'Nothing playing';
-    document.getElementById('np-artist').textContent = 'Add songs to start listening';
-    document.getElementById('np-added').textContent  = '';
-    img.style.display = 'none'; ph.style.display = '';
-    document.getElementById('prog-fill').style.width = '0%';
-    document.getElementById('t-cur').textContent = '0:00';
-    document.getElementById('t-tot').textContent = '0:00';
+function setNP(item) {
+  const img=document.getElementById('np-img'),ph=document.getElementById('np-ph');
+  if(!item){
+    document.getElementById('np-title').textContent='Nothing playing';
+    document.getElementById('np-artist').textContent='Add songs to start';
+    document.getElementById('np-by').textContent='';
+    img.style.display='none'; ph.style.display='';
+    document.getElementById('prog-fill').style.width='0%';
+    document.getElementById('t-cur').textContent='0:00';
+    document.getElementById('t-tot').textContent='0:00';
     return;
   }
-  document.getElementById('np-title').textContent  = item.title;
-  document.getElementById('np-artist').textContent = item.artist;
-  document.getElementById('np-added').textContent  = item.addedBy ? `Added by ${item.addedBy}` : '';
-  if (item.art) { img.src = item.art; img.style.display = 'block'; ph.style.display = 'none'; }
-  else { img.style.display = 'none'; ph.style.display = ''; }
+  document.getElementById('np-title').textContent=item.title;
+  document.getElementById('np-artist').textContent=item.artist;
+  document.getElementById('np-by').textContent=item.addedBy?`Added by ${item.addedBy}`:'';
+  if(item.art){img.src=item.art;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';ph.style.display='';}
 }
 
 // ═══════════════════════════════════════════════
-//  SOUNDCLOUD WIDGET
+//  SOUNDCLOUD
 // ═══════════════════════════════════════════════
 function setupSC() {
-  const iframe = document.getElementById('sc-iframe');
-  iframe.src = 'https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/soundcloud-shine&auto_play=false&hide_related=true&show_comments=false&show_user=false';
-  const widget = SC.Widget(iframe);
-  S.scWidget = widget;
-
-  widget.bind(SC.Widget.Events.READY, () => {
-    S.scReady = true;
-    applyVolume(); // set volume right after ready
-    const pb = S.playback;
-    if (pb.currentIndex >= 0 && S.queue[pb.currentIndex]) {
-      loadTrack(S.queue[pb.currentIndex].url, pb.isPlaying, pb.position);
-    }
+  const iframe=document.getElementById('sc-iframe');
+  iframe.src='https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/soundcloud-shine&auto_play=false&hide_related=true&show_comments=false&show_user=false';
+  const widget=SC.Widget(iframe); S.scWidget=widget;
+  widget.bind(SC.Widget.Events.READY,()=>{
+    S.scReady=true; applyVol();
+    const pb=S.playback;
+    if(pb.currentIndex>=0&&S.queue[pb.currentIndex]) loadTrack(S.queue[pb.currentIndex].url,pb.isPlaying,pb.position);
   });
-
-  widget.bind(SC.Widget.Events.PLAY_PROGRESS, (e) => {
-    S.localPos = e.currentPosition;
-    S.localDur = e.relativePosition > 0 ? e.currentPosition / e.relativePosition : 0;
-    updateProgress(e.currentPosition, S.localDur);
-    armSkipTimer(); // keep refreshing fallback skip timer
+  widget.bind(SC.Widget.Events.PLAY_PROGRESS,e=>{
+    S.localPos=e.currentPosition; S.localDur=e.relativePosition>0?e.currentPosition/e.relativePosition:0;
+    updateProg(e.currentPosition,S.localDur); armSkip();
   });
-
-  widget.bind(SC.Widget.Events.FINISH, () => {
-    clearSkipTimer();
-    send({ type: 'track_ended', index: S.playback.currentIndex });
-  });
-
-  widget.bind(SC.Widget.Events.PLAY, () => {
-    document.getElementById('play-btn').textContent = '⏸';
-    applyVolume(); // SC resets volume on play — fix it immediately
-  });
-
-  widget.bind(SC.Widget.Events.PAUSE, () => {
-    document.getElementById('play-btn').textContent = '▶';
-  });
-
-  // After each load completes, re-apply volume (SC resets it)
-  widget.bind(SC.Widget.Events.READY, () => applyVolume());
+  widget.bind(SC.Widget.Events.FINISH,()=>{ clearSkip(); send({type:'track_ended',index:S.playback.currentIndex}); });
+  widget.bind(SC.Widget.Events.PLAY,()=>{ document.getElementById('play-btn').textContent='⏸'; applyVol(); });
+  widget.bind(SC.Widget.Events.PAUSE,()=>{ document.getElementById('play-btn').textContent='▶'; });
 }
 
-function applyVolume() {
-  if (S.scWidget && S.scReady) S.scWidget.setVolume(S.volume);
-}
-
-function loadTrack(url, autoPlay, seekMs) {
-  if (!S.scWidget || !S.scReady) return;
-  S.scCurrentUrl = url;
-  clearSkipTimer();
-  S.scWidget.load(url, {
-    auto_play: autoPlay,
-    hide_related: true, show_comments: false, show_user: false, show_reposts: false,
-    visual: false, color: '#e8a44a',
-    callback: () => {
-      // Re-apply volume immediately after load (SC resets it to 100)
-      applyVolume();
-      if (seekMs && seekMs > 800) {
-        setTimeout(() => { S.scWidget.seekTo(seekMs); applyVolume(); }, 500);
-      }
-    }
+function applyVol(){if(S.scWidget&&S.scReady) S.scWidget.setVolume(S.volume);}
+function loadTrack(url,autoPlay,seekMs) {
+  if(!S.scWidget||!S.scReady) return;
+  S.scCurrentUrl=url; clearSkip();
+  S.scWidget.load(url,{auto_play:autoPlay,hide_related:true,show_comments:false,show_user:false,show_reposts:false,visual:false,color:'%23e8a44a',
+    callback:()=>{ applyVol(); if(seekMs&&seekMs>800) setTimeout(()=>{S.scWidget.seekTo(seekMs);applyVol();},500); }
   });
 }
-
-// Fallback skip timer — if SC FINISH event doesn't fire, skip after duration + 3s
-function armSkipTimer() {
-  if (!S.localDur || S.localDur <= 0) return;
-  const remaining = S.localDur - S.localPos;
-  if (remaining > 5000) {
-    clearSkipTimer();
-    S.skipTimer = setTimeout(() => {
-      // Only fire if we're still on the same track and it hasn't already advanced
-      const ci = S.playback.currentIndex;
-      if (S.playback.isPlaying && ci >= 0) {
-        send({ type: 'track_ended', index: ci });
-      }
-    }, remaining + 3000);
+function armSkip(){
+  if(!S.localDur||S.localDur<=0) return;
+  const rem=S.localDur-S.localPos; if(rem>5000){clearSkip();S.skipTimer=setTimeout(()=>{if(S.playback.isPlaying&&S.playback.currentIndex>=0)send({type:'track_ended',index:S.playback.currentIndex});},rem+3000);}
+}
+function clearSkip(){clearTimeout(S.skipTimer);S.skipTimer=null;}
+function applyPlayback(pb,fromSnap) {
+  S.playback=pb; const item=S.queue[pb.currentIndex]; renderQueue();
+  document.getElementById('play-btn').textContent=pb.isPlaying?'⏸':'▶';
+  if(!item) return; if(!S.scReady) return;
+  if(item.url!==S.scCurrentUrl) { loadTrack(item.url,pb.isPlaying,pb.position); }
+  else {
+    if(pb.isPlaying){if(Math.abs((pb.position||0)-(S.localPos||0))>4000)S.scWidget.seekTo(pb.position);S.scWidget.play();}
+    else{S.scWidget.pause();if(pb.position!=null)S.scWidget.seekTo(pb.position);}
+    applyVol();
   }
 }
-function clearSkipTimer() { clearTimeout(S.skipTimer); S.skipTimer = null; }
+function updateProg(pos,dur){
+  const pct=dur>0?Math.min(100,(pos/dur)*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('t-cur').textContent=fmt(pos);
+  document.getElementById('t-tot').textContent=fmt(dur);
+}
+function onSeek(e){
+  if(S.playback.currentIndex<0||!S.localDur) return;
+  const bar=document.getElementById('prog-bar'),rect=bar.getBoundingClientRect();
+  const pct=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  send({type:'seek',position:Math.floor(pct*S.localDur)});
+}
+function onVol(v){S.volume=parseInt(v);applyVol();}
 
 // ═══════════════════════════════════════════════
-//  PLAYBACK
+//  SEARCH — via server proxy (no CORS issues)
 // ═══════════════════════════════════════════════
-function applyPlayback(pb, fromSnapshot) {
-  S.playback = pb;
-  const item = S.queue[pb.currentIndex];
-  renderQueue();
-  document.getElementById('play-btn').textContent = pb.isPlaying ? '⏸' : '▶';
-
-  if (!item) return;
-
-  if (!S.scReady) return; // setupSC READY handler will call applyPlayback
-
-  if (item.url !== S.scCurrentUrl) {
-    // Different track — load it
-    loadTrack(item.url, pb.isPlaying, pb.position);
-  } else {
-    // Same track — sync play state + position if drifted
-    if (pb.isPlaying) {
-      const drift = Math.abs((pb.position||0) - (S.localPos||0));
-      if (drift > 4000) S.scWidget.seekTo(pb.position);
-      S.scWidget.play();
-    } else {
-      S.scWidget.pause();
-      if (pb.position !== undefined) S.scWidget.seekTo(pb.position);
-    }
-    applyVolume();
-  }
-}
-
-function updateProgress(pos, dur) {
-  const pct = dur > 0 ? Math.min(100, (pos/dur)*100) : 0;
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('t-cur').textContent = fmt(pos);
-  document.getElementById('t-tot').textContent = fmt(dur);
-}
-
-function onSeek(e) {
-  if (S.playback.currentIndex < 0 || !S.localDur) return;
-  const bar = document.getElementById('prog-bar');
-  const rect = bar.getBoundingClientRect();
-  const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  send({ type: 'seek', position: Math.floor(pct * S.localDur) });
-}
-
-function onVol(v) {
-  S.volume = parseInt(v); // save it
-  applyVolume();
-}
-
-// ═══════════════════════════════════════════════
-//  SEARCH  (SoundCloud public API)
-// ═══════════════════════════════════════════════
-
-// Working public client IDs (rotated list — try each until one works)
-const SC_CLIENT_IDS = [
-  'a3e059563d7fd3372b49b37f00a00bcf',
-  'iZIs9mchVcX5lhVRyQGGAYlNPa2RS2bx',
-  '2t9loNQH90kzJcsFCODdigxfp325aq4z',
-];
-
-async function tryFetch(url) {
-  for (const id of SC_CLIENT_IDS) {
-    try {
-      const r = await fetch(url + (url.includes('?') ? '&' : '?') + `client_id=${id}`);
-      if (r.ok) { const d = await r.json(); return d; }
-    } catch {}
-  }
-  return null;
-}
-
 async function doSearch() {
-  const q = document.getElementById('search-input').value.trim();
-  if (!q) return;
-  const el = document.getElementById('search-results');
-  el.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:13px">🔍 Searching…</div>`;
-
-  const data = await tryFetch(`https://api.soundcloud.com/tracks?q=${encodeURIComponent(q)}&limit=15`);
-  if (!data) {
-    el.innerHTML = `<div class="hint-box">Couldn't reach SoundCloud search. Use the <strong>Add URL</strong> tab — paste any SoundCloud track link directly.</div>`;
-    return;
-  }
-  const tracks = data.collection || data;
-  if (!tracks || !tracks.length) {
-    el.innerHTML = `<div class="hint-box">No results found. Try a different search or use the <strong>Add URL</strong> tab.</div>`;
-    return;
-  }
-  el.innerHTML = tracks.map((t, i) => {
-    const art = t.artwork_url ? t.artwork_url.replace('-large','-t300x300') : '';
-    const artist = t.user?.username || 'Unknown';
-    const dur = t.duration ? fmt(t.duration) : '';
-    return `
-    <div class="result-item slide-in" style="animation-delay:${i*0.03}s">
-      <div class="result-art">${art?`<img src="${esc(art)}" alt="">`:'🎵'}</div>
-      <div class="result-meta">
-        <div class="result-title">${esc(t.title)}</div>
-        <div class="result-sub">${esc(artist)}${dur?' · '+dur:''}</div>
-      </div>
-      <button class="add-btn" data-url="${esc(t.permalink_url)}" data-title="${esc(t.title)}" data-artist="${esc(artist)}" data-art="${esc(art)}" onclick="addFromResult(this)">+ Queue</button>
-    </div>`;
-  }).join('');
+  const q=document.getElementById('search-in').value.trim(); if(!q) return;
+  const el=document.getElementById('results-el');
+  el.innerHTML=`<div style="text-align:center;padding:20px;color:var(--txd);font-size:13px">🔍 Searching…</div>`;
+  try {
+    const r=await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+    const tracks=await r.json();
+    if(tracks.error){el.innerHTML=`<div class="hint">${esc(tracks.error)}</div>`;return;}
+    if(!tracks.length){el.innerHTML=`<div class="hint">No results. Try the <strong>Add URL</strong> tab.</div>`;return;}
+    el.innerHTML=tracks.map((t,i)=>`
+      <div class="r-item fadein" style="animation-delay:${i*0.03}s">
+        <div class="r-art">${t.art?`<img src="${esc(t.art)}" alt="">`:'🎵'}</div>
+        <div class="r-meta">
+          <div class="r-title">${esc(t.title)}</div>
+          <div class="r-sub">${esc(t.artist)}${t.duration?' · '+fmt(t.duration):''}</div>
+        </div>
+        <button class="add-btn" data-url="${esc(t.url)}" data-title="${esc(t.title)}" data-artist="${esc(t.artist)}" data-art="${esc(t.art)}" onclick="addFromResult(this)">+ Queue</button>
+      </div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="hint">Search error. Use the <strong>Add URL</strong> tab instead.</div>`; }
 }
 
 function addFromResult(btn) {
-  send({ type: 'queue_add', url: btn.dataset.url, title: btn.dataset.title, artist: btn.dataset.artist, art: btn.dataset.art });
-  btn.textContent = '✓ Added'; btn.classList.add('added');
+  send({type:'queue_add',url:btn.dataset.url,title:btn.dataset.title,artist:btn.dataset.artist,art:btn.dataset.art});
+  btn.textContent='✓'; btn.classList.add('added');
 }
 
 // ═══════════════════════════════════════════════
 //  ADD FROM URL
 // ═══════════════════════════════════════════════
 async function addUrl() {
-  const raw = document.getElementById('url-input').value.trim();
-  const status = document.getElementById('url-status');
-  if (!raw) { status.textContent = 'Paste a SoundCloud URL first'; return; }
-  if (!raw.includes('soundcloud.com')) { status.textContent = 'Only SoundCloud URLs supported'; return; }
-  status.textContent = 'Fetching track info…';
+  const raw=document.getElementById('url-in').value.trim();
+  const status=document.getElementById('url-status');
+  if(!raw){status.textContent='Paste a SoundCloud URL';return;}
+  if(!raw.includes('soundcloud.com')){status.textContent='Only SoundCloud URLs';return;}
+  status.textContent='Fetching…';
   try {
-    const r = await fetch(`https://soundcloud.com/oembed?url=${encodeURIComponent(raw)}&format=json`);
-    if (!r.ok) throw new Error();
-    const d = await r.json();
-    send({ type: 'queue_add', url: raw, title: d.title || 'Unknown', artist: d.author_name || 'SoundCloud', art: d.thumbnail_url || '' });
-  } catch {
-    send({ type: 'queue_add', url: raw, title: raw.split('/').pop() || 'Track', artist: 'SoundCloud', art: '' });
-  }
-  document.getElementById('url-input').value = '';
-  status.textContent = '';
-  toast('Added to queue!');
+    const r=await fetch(`https://soundcloud.com/oembed?url=${encodeURIComponent(raw)}&format=json`);
+    const d=await r.json();
+    send({type:'queue_add',url:raw,title:d.title||'Unknown',artist:d.author_name||'SoundCloud',art:d.thumbnail_url||''});
+  } catch { send({type:'queue_add',url:raw,title:raw.split('/').pop()||'Track',artist:'SoundCloud',art:''}); }
+  document.getElementById('url-in').value=''; status.textContent=''; toast('Added to queue!');
 }
 
 // ═══════════════════════════════════════════════
 //  CHAT
 // ═══════════════════════════════════════════════
-function sendChat() {
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-  send({ type: 'chat', text });
-  input.value = '';
+function sendChat(){const input=document.getElementById('chat-in');const text=input.value.trim();if(!text)return;send({type:'chat',text});input.value='';}
+function addChatMsg(msg){
+  const msgs=document.getElementById('chat-msgs');
+  const t=new Date(msg.ts);
+  const time=`${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
+  const div=document.createElement('div'); div.className='chat-msg fadein';
+  div.innerHTML=`<div class="chat-av" style="background:${msg.color}22;color:${msg.color}">${msg.emoji}</div><div class="chat-bd"><div class="chat-meta"><span class="chat-name">${esc(msg.username)}</span><span class="chat-time">${time}</span></div><div class="chat-txt">${esc(msg.text)}</div></div>`;
+  msgs.appendChild(div); msgs.scrollTop=msgs.scrollHeight;
+}
+function addSysMsg(text){const msgs=document.getElementById('chat-msgs');const div=document.createElement('div');div.className='chat-sys';div.innerHTML=`<span>${esc(text)}</span>`;msgs.appendChild(div);msgs.scrollTop=msgs.scrollHeight;}
+
+// ═══════════════════════════════════════════════
+//  FRIENDS
+// ═══════════════════════════════════════════════
+async function loadFriends() {
+  const r=await api('GET','/api/friends');
+  if(r.error) return;
+  const el=document.getElementById('friends-el');
+  const reqs=S.friendRequests||[];
+  let html='';
+  if(reqs.length>0){
+    html+=`<div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--txd);padding:4px 2px 6px">Pending requests</div>`;
+    html+=reqs.map(u=>`<div class="req-item">
+      <div class="f-av">👋</div>
+      <div class="f-info"><div class="f-name">${esc(u)}</div><div class="f-status">wants to be friends</div></div>
+      <div class="req-acts">
+        <button class="req-btn acc" onclick="acceptFriend('${esc(u)}')">✓</button>
+        <button class="req-btn dec" onclick="declineFriend('${esc(u)}')">✕</button>
+      </div>
+    </div>`).join('');
+    html+=`<div style="height:8px"></div>`;
+  }
+  if(r.length>0){
+    html+=`<div style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--txd);padding:4px 2px 6px">Friends</div>`;
+    html+=r.map(f=>`<div class="friend-item">
+      <div class="f-av" style="background:color-mix(in srgb,var(--ac) 15%,transparent)">🎵</div>
+      <div class="f-info">
+        <div class="f-name">${esc(f.displayName||f.username)}</div>
+        <div class="f-status ${f.online?'online':''}">${f.online?`🟢 In "${esc(f.roomName||'their room')}")`:'Offline'}</div>
+      </div>
+      ${f.online&&f.roomCode?`<button class="f-visit" onclick="visitRoom('${esc(f.roomCode)}')">Visit →</button>`:''}
+    </div>`).join('');
+  } else if(!reqs.length) {
+    html=`<div class="hint" style="text-align:center">No friends yet.<br>Add someone by username below!</div>`;
+  }
+  el.innerHTML=html;
 }
 
-function addChatMsg(msg) {
-  const msgs = document.getElementById('chat-msgs');
-  const t = new Date(msg.ts);
-  const time = `${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`;
-  const div = document.createElement('div');
-  div.className = 'chat-msg slide-in';
-  div.innerHTML = `
-    <div class="chat-av" style="background:${msg.color}22;color:${msg.color}">${msg.emoji}</div>
-    <div class="chat-body">
-      <div class="chat-meta"><span class="chat-name">${esc(msg.name)}</span><span class="chat-time">${time}</span></div>
-      <div class="chat-text">${esc(msg.text)}</div>
-    </div>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+async function addFriend() {
+  const input=document.getElementById('friend-in');
+  const username=input.value.trim();
+  if(!username) return;
+  document.getElementById('friend-err').textContent='';
+  const r=await api('POST','/api/friends/request',{targetUsername:username});
+  if(r.error){document.getElementById('friend-err').textContent=r.error;return;}
+  if(r.accepted) toast(`You and ${username} are now friends! 🎉`);
+  else toast(`Friend request sent to ${username}`);
+  input.value=''; loadFriends();
 }
 
-function addSysMsg(text) {
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = 'chat-system';
-  div.innerHTML = `<span>${esc(text)}</span>`;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+async function acceptFriend(username) {
+  const r=await api('POST','/api/friends/accept',{fromUsername:username});
+  if(r.accepted){ S.friendRequests=S.friendRequests.filter(u=>u!==username); S.friends.push(username); toast(`You and ${username} are now friends! 🎉`); loadFriends(); }
 }
+async function declineFriend(username) {
+  await api('POST','/api/friends/decline',{fromUsername:username});
+  S.friendRequests=S.friendRequests.filter(u=>u!==username); loadFriends();
+}
+function visitRoom(roomCode) {
+  connectWS(roomCode);
+  toast('Joining room…');
+}
+
+// ═══════════════════════════════════════════════
+//  MISC
+// ═══════════════════════════════════════════════
+function copyLink() {
+  const url=`${location.origin}${location.pathname}?room=${S.roomCode}`;
+  navigator.clipboard.writeText(url).then(()=>toast('Room link copied! 🔗'));
+}
+
+document.getElementById('room-code-el').addEventListener('DOMNodeInserted', function(){}, false);
 
 // ═══════════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════════
-window.addEventListener('load', () => {
-  const p = new URLSearchParams(location.search);
-  const code = p.get('room');
-  if (code) {
-    document.getElementById('join-code').value = code.toUpperCase();
-    document.getElementById('join-name').focus();
-    toast(`Room code detected — enter your name to join`);
+window.addEventListener('load', async ()=>{
+  const params=new URLSearchParams(location.search);
+  const roomParam=params.get('room');
+
+  const ok=await tryAutoLogin();
+  if(ok) {
+    document.getElementById('auth-screen').classList.remove('active');
+    document.getElementById('room-screen').classList.add('active');
+    connectWS(roomParam||S.myRoomCode);
+  } else if(roomParam) {
+    // Show auth with room code visible
+    toast('Sign in to join the room');
   }
 });
 
-window.addEventListener('beforeunload', (e) => {
-  if (S.roomCode) { e.preventDefault(); e.returnValue = ''; }
+// Update room-code-el after snapshot
+const _origOnMsg=onMsg;
+window.addEventListener('load',()=>{
+  // patch to also set room code display
+  const orig=onMsg;
 });
+
+// Watch for room snapshot to set code display
+function onRoomCode(code) {
+  document.getElementById('room-code-el').textContent=code;
+}
+// Override applyDecoration to also set code
+const _applyDec=applyDecoration;
+function applyDecoration(dec){
+  _applyDec(dec);
+}
+
+window.addEventListener('beforeunload',e=>{if(S.roomCode){e.preventDefault();e.returnValue='';}});
+</script>
+<script>
+// ── patch to set room code after snapshot (deferred) ──
+const _origOnMsg2 = onMsg;
+function onMsg(msg) {
+  _origOnMsg2(msg);
+  if(msg.type==='room_snapshot') {
+    document.getElementById('room-code-el').textContent = msg.roomCode;
+  }
+}
 </script>
 </body>
 </html>
