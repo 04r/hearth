@@ -5,166 +5,76 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hearth</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600;700&family=Petit+Formal+Script&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════
-   THEME SYSTEM — four genuinely different worlds
+   THEME SYSTEM — genuinely different aesthetics
 ═══════════════════════════════════════════════════════════ */
 
-/* ☕ CAFÉ — rainy window, espresso, jazz at 1am */
-[data-theme="cafe"] {
-  --bg: #0f0c09; --sf: #1a1510; --sf2: #231c14; --sf3: #2c2318;
-  --br: #3d3020; --ac: #d4854a; --acd: #a85e2a; --acg: #f0a060;
-  --danger: #c05040; --ok: #6aaa60;
-  --tx: #f0e6d4; --txm: #c0967a; --txd: #7a5a3a;
+/* 🪵 CABIN — warm firelit wood cabin */
+[data-theme="cabin"] {
+  --bg: #1c1510; --sf: #251c14; --sf2: #2f2318; --sf3: #3a2d20;
+  --br: #4a3626; --ac: #e8a44a; --acd: #b07030; --acg: #f5c870;
+  --danger: #d06050; --ok: #70b870;
+  --tx: #f0e4d0; --txm: #b89070; --txd: #7a5840;
   --font-h: 'Lora', serif; --font-b: 'DM Sans', sans-serif;
-  --btn-tx: #0f0c09;
-  --glow1: rgba(212,133,74,0.09); --glow2: rgba(80,40,20,0.12);
-  /* panel shape: warm, slightly inset, foggy glass */
-  --panel-radius: 0px;
-  --panel-border: 1px solid rgba(61,48,32,0.8);
-  --panel-blur: blur(16px) saturate(1.2);
-  --panel-bg: rgba(26,21,16,0.88);
-  --center-bg: rgba(15,12,9,0.82);
-  --progress-h: 3px;
-  --btn-radius: 6px;
-  --tab-style: underline;
+  --btn-tx: #1c1510;
+  --wall-bg: repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 60px), repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 60px), #1c1510;
+  --glow1: rgba(232,164,74,0.08); --glow2: rgba(201,100,80,0.05);
+  --particle: '✦';
 }
 
-/* 📚 LIBRARY — candlelit academia, old leather, dust motes */
-[data-theme="library"] {
-  --bg: #0a0806; --sf: #160f08; --sf2: #1e160d; --sf3: #261c12;
-  --br: #3c2c18; --ac: #c8943a; --acd: #9a6c20; --acg: #e8bc60;
-  --danger: #b84030; --ok: #5a9050;
-  --tx: #ede0c4; --txm: #b8946a; --txd: #7a5a38;
-  --font-h: 'Crimson Pro', serif; --font-b: 'Crimson Pro', serif;
-  --btn-tx: #0a0806;
-  --glow1: rgba(200,148,58,0.1); --glow2: rgba(120,60,10,0.08);
-  /* panel shape: thick book-spine borders, parchment texture */
-  --panel-radius: 0px;
-  --panel-border: 2px solid rgba(60,44,24,0.9);
-  --panel-blur: blur(0px);
-  --panel-bg: rgba(22,15,8,0.96);
-  --center-bg: rgba(10,8,6,0.95);
-  --progress-h: 4px;
-  --btn-radius: 3px;
-  --tab-style: underline;
+/* 🌊 AQUARIUM — deep ocean bioluminescence */
+[data-theme="aquarium"] {
+  --bg: #030d18; --sf: #061624; --sf2: #0a1f30; --sf3: #0e283c;
+  --br: #0e3550; --ac: #00d4ff; --acd: #0099cc; --acg: #80eeff;
+  --danger: #ff6b6b; --ok: #00ffaa;
+  --tx: #d0f4ff; --txm: #60b8d8; --txd: #305070;
+  --font-h: 'Syne', sans-serif; --font-b: 'DM Sans', sans-serif;
+  --btn-tx: #030d18;
+  --wall-bg: radial-gradient(ellipse at 20% 50%, rgba(0,100,180,0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0,180,255,0.1) 0%, transparent 40%), #030d18;
+  --glow1: rgba(0,212,255,0.08); --glow2: rgba(0,100,255,0.05);
+  --particle: '◉';
 }
 
-/* 📺 Y2K — CRT bedroom, AIM bubbles, neon on dark plastic */
-[data-theme="y2k"] {
-  --bg: #08080f; --sf: #0e0e1a; --sf2: #141420; --sf3: #1a1a28;
-  --br: #2a2a48; --ac: #00e5ff; --acd: #0088cc; --acg: #80f0ff;
-  --danger: #ff3366; --ok: #00ff88;
-  --tx: #e0e8ff; --txm: #7080c0; --txd: #363660;
-  --font-h: 'Space Mono', monospace; --font-b: 'Space Mono', monospace;
-  --btn-tx: #08080f;
-  --glow1: rgba(0,229,255,0.08); --glow2: rgba(255,0,128,0.06);
-  /* panel shape: sharp corners, pixel borders, CRT scanlines */
-  --panel-radius: 0px;
-  --panel-border: 1px solid rgba(0,229,255,0.25);
-  --panel-blur: blur(0px);
-  --panel-bg: rgba(14,14,26,0.97);
-  --center-bg: rgba(8,8,15,0.97);
-  --progress-h: 6px;
-  --btn-radius: 2px;
-  --tab-style: block;
+/* 🌸 COTTAGECORE — pressed flowers & warm linen */
+[data-theme="cottage"] {
+  --bg: #faf5ee; --sf: #f2ebe0; --sf2: #e8dfd0; --sf3: #ddd0bc;
+  --br: #c8b898; --ac: #8b5e3c; --acd: #6b4020; --acg: #b07848;
+  --danger: #c04040; --ok: #4a8040;
+  --tx: #2a1c10; --txm: #6a4830; --txd: #9a7858;
+  --font-h: 'Crimson Pro', serif; --font-b: 'Nunito', sans-serif;
+  --btn-tx: #faf5ee;
+  --wall-bg: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c8b898' fill-opacity='0.15'%3E%3Cpath d='M30 0c16.569 0 30 13.431 30 30S46.569 60 30 60 0 46.569 0 30 13.431 0 30 0zm0 4C15.64 4 4 15.64 4 30s11.64 26 26 26 26-11.64 26-26S44.36 4 30 4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"), #faf5ee;
+  --glow1: rgba(139,94,60,0.05); --glow2: rgba(200,150,100,0.04);
+  --particle: '❀';
 }
 
-/* 🌲 FOREST — enchanted dusk, fireflies, moss and fog */
-[data-theme="forest"] {
-  --bg: #060d06; --sf: #0c140c; --sf2: #111a11; --sf3: #162016;
-  --br: #1e3020; --ac: #6ec86e; --acd: #3a9040; --acg: #a0e890;
-  --danger: #c86050; --ok: #6ec86e;
-  --tx: #d8f0d0; --txm: #80b878; --txd: #3a6038;
+/* 🌙 OBSERVATORY — midnight stars & brass telescopes */
+[data-theme="observatory"] {
+  --bg: #080a14; --sf: #0e1222; --sf2: #141830; --sf3: #1a203a;
+  --br: #252c48; --ac: #c8a84a; --acd: #9a7828; --acg: #f0cc70;
+  --danger: #e05050; --ok: #50c870;
+  --tx: #e8e0f0; --txm: #9888b0; --txd: #4a4060;
+  --font-h: 'Space Mono', monospace; --font-b: 'DM Sans', sans-serif;
+  --btn-tx: #080a14;
+  --wall-bg: radial-gradient(ellipse at 50% 0%, rgba(80,60,160,0.2) 0%, transparent 60%), #080a14;
+  --glow1: rgba(200,168,74,0.07); --glow2: rgba(100,80,200,0.06);
+  --particle: '★';
+}
+
+/* 🍄 MUSHROOM GROVE — enchanted forest floor */
+[data-theme="mushroom"] {
+  --bg: #100e08; --sf: #18160c; --sf2: #201e12; --sf3: #282618;
+  --br: #3a3420; --ac: #d4a830; --acd: #a07820; --acg: #f0cc50;
+  --danger: #d06840; --ok: #70c860;
+  --tx: #f0ecd4; --txm: #c0a860; --txd: #7a6830;
   --font-h: 'Nunito', sans-serif; --font-b: 'Nunito', sans-serif;
-  --btn-tx: #060d06;
-  --glow1: rgba(110,200,110,0.08); --glow2: rgba(40,120,40,0.06);
-  /* panel shape: organic, rounded, mossy */
-  --panel-radius: 20px;
-  --panel-border: 1px solid rgba(30,48,32,0.8);
-  --panel-blur: blur(20px) saturate(1.4);
-  --panel-bg: rgba(12,20,12,0.86);
-  --center-bg: rgba(6,13,6,0.84);
-  --progress-h: 5px;
-  --btn-radius: 50px;
-  --tab-style: underline;
+  --btn-tx: #100e08;
+  --wall-bg: repeating-radial-gradient(circle at 0 0, transparent 0, #100e08 8px), repeating-linear-gradient(rgba(212,168,48,0.03), rgba(212,168,48,0.03));
+  --glow1: rgba(212,168,48,0.08); --glow2: rgba(180,100,40,0.06);
+  --particle: '🍄';
 }
-
-/* ── theme-driven shape overrides ── */
-
-/* CAFÉ: flat, steamy, panel-less feel */
-[data-theme="cafe"] .panel-left  { border-radius: 0; border-right: var(--panel-border); background: var(--panel-bg); backdrop-filter: var(--panel-blur); }
-[data-theme="cafe"] .panel-center { border-radius: 0; background: var(--center-bg); backdrop-filter: var(--panel-blur); }
-[data-theme="cafe"] .btn { border-radius: var(--btn-radius) !important; }
-[data-theme="cafe"] .btn-sm { border-radius: var(--btn-radius) !important; }
-[data-theme="cafe"] input[type="text"], [data-theme="cafe"] input[type="password"] { border-radius: 4px; }
-[data-theme="cafe"] .auth-card { border-radius: 8px; border-left: 3px solid var(--ac); box-shadow: inset 0 0 40px rgba(212,133,74,0.04), 0 20px 60px rgba(0,0,0,0.6); }
-[data-theme="cafe"] .prog-bar { height: var(--progress-h); border-radius: 0; }
-[data-theme="cafe"] .prog-fill { border-radius: 0; }
-[data-theme="cafe"] .np-art { border-radius: 4px; }
-[data-theme="cafe"] .q-thumb { border-radius: 3px; }
-[data-theme="cafe"] .r-art { border-radius: 3px; }
-
-/* LIBRARY: thick ruled-line dividers, serif everything, parchment feel */
-[data-theme="library"] .panel-left { border-radius: 0; border-right: var(--panel-border); background: var(--panel-bg); }
-[data-theme="library"] .panel-center { border-radius: 0; background: var(--center-bg); }
-[data-theme="library"] .btn { border-radius: var(--btn-radius) !important; font-family: 'Crimson Pro', serif !important; font-size: 15px !important; letter-spacing: 0.06em; }
-[data-theme="library"] .btn-sm { border-radius: var(--btn-radius) !important; font-family: 'Crimson Pro', serif !important; font-size: 14px !important; }
-[data-theme="library"] input[type="text"], [data-theme="library"] input[type="password"] { border-radius: 2px; border: none; border-bottom: 2px solid var(--br); background: transparent; padding-left: 2px; font-family: 'Crimson Pro', serif; font-size: 16px; }
-[data-theme="library"] input:focus { border-bottom-color: var(--ac); box-shadow: none; }
-[data-theme="library"] .auth-card { border-radius: 0; border: none; border-top: 3px double var(--br); border-bottom: 3px double var(--br); background: var(--panel-bg); }
-[data-theme="library"] .prog-bar { height: var(--progress-h); border-radius: 0; background: rgba(60,44,24,0.5); }
-[data-theme="library"] .prog-fill { border-radius: 0; }
-[data-theme="library"] .np-title { font-size: 20px; font-style: italic; }
-[data-theme="library"] .tabs { border-bottom: 2px solid var(--br); }
-[data-theme="library"] .tab-btn { font-family: 'Crimson Pro', serif; font-size: 15px; letter-spacing: 0.04em; }
-[data-theme="library"] .room-hdr { border-bottom: 2px solid var(--br); }
-[data-theme="library"] .np-art { border-radius: 3px; box-shadow: 4px 4px 0 rgba(60,44,24,0.6); }
-
-/* Y2K: sharp CRT scanlines, pixel fonts, everything hard-edged */
-[data-theme="y2k"] .panel-left { border-radius: 0; border-right: var(--panel-border); background: var(--panel-bg); }
-[data-theme="y2k"] .panel-center { border-radius: 0; background: var(--center-bg); }
-[data-theme="y2k"] .btn { border-radius: var(--btn-radius) !important; border: 1px solid var(--ac) !important; font-family: 'Space Mono', monospace !important; font-size: 11px !important; letter-spacing: 0.06em; text-transform: uppercase; }
-[data-theme="y2k"] .btn-sm { border-radius: var(--btn-radius) !important; font-family: 'Space Mono', monospace !important; font-size: 10px !important; text-transform: uppercase; letter-spacing: 0.05em; }
-[data-theme="y2k"] input[type="text"], [data-theme="y2k"] input[type="password"] { border-radius: 2px; border-color: rgba(0,229,255,0.3); font-family: 'Space Mono', monospace; font-size: 12px; background: rgba(0,229,255,0.04); }
-[data-theme="y2k"] .auth-card { border-radius: 0; border: 1px solid rgba(0,229,255,0.3); box-shadow: 0 0 30px rgba(0,229,255,0.08), inset 0 0 20px rgba(0,229,255,0.03); }
-[data-theme="y2k"] .prog-bar { height: var(--progress-h); border-radius: 0; }
-[data-theme="y2k"] .prog-fill { border-radius: 0; background: var(--ac); box-shadow: 0 0 8px var(--ac); }
-[data-theme="y2k"] .ctrl.pp { border-radius: 4px !important; box-shadow: 0 0 16px color-mix(in srgb,var(--ac) 50%,transparent); }
-[data-theme="y2k"] .np-art { border-radius: 2px; border: 1px solid rgba(0,229,255,0.2); }
-[data-theme="y2k"] .badge { border-radius: 2px; }
-[data-theme="y2k"] .room-name { text-shadow: 0 0 10px var(--ac); }
-[data-theme="y2k"] .np-title { text-shadow: 0 0 8px rgba(0,229,255,0.4); font-size: 14px; letter-spacing: 0.02em; }
-/* scanline overlay for Y2K */
-[data-theme="y2k"] body::before {
-  content: ''; position: fixed; inset: 0; z-index: 9998; pointer-events: none;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
-  animation: scanroll 8s linear infinite;
-}
-@keyframes scanroll { from{background-position:0 0} to{background-position:0 100px} }
-[data-theme="y2k"] .tab-btn.on { background: color-mix(in srgb,var(--ac) 12%,transparent); border-bottom-color: var(--ac); }
-
-/* FOREST: rounded everything, soft mossy organic */
-[data-theme="forest"] .panel-left { border-radius: var(--panel-radius) var(--panel-radius) 0 0; border-right: var(--panel-border); background: var(--panel-bg); backdrop-filter: var(--panel-blur); margin: 8px 0 8px 8px; height: calc(100% - 16px); }
-[data-theme="forest"] .panel-center { border-radius: 0 var(--panel-radius) var(--panel-radius) 0; background: var(--center-bg); backdrop-filter: var(--panel-blur); margin: 8px 8px 8px 0; height: calc(100% - 16px); overflow: hidden; }
-[data-theme="forest"] .btn { border-radius: var(--btn-radius) !important; }
-[data-theme="forest"] .btn-sm { border-radius: 50px !important; }
-[data-theme="forest"] input[type="text"], [data-theme="forest"] input[type="password"] { border-radius: 50px; }
-[data-theme="forest"] .auth-card { border-radius: 24px; }
-[data-theme="forest"] .prog-bar { height: var(--progress-h); border-radius: 50px; }
-[data-theme="forest"] .prog-fill { border-radius: 50px; }
-[data-theme="forest"] .np-art { border-radius: 16px; }
-[data-theme="forest"] .q-thumb { border-radius: 10px; }
-[data-theme="forest"] .ctrl.pp { box-shadow: 0 0 20px color-mix(in srgb,var(--ac) 40%,transparent), 0 0 40px color-mix(in srgb,var(--ac) 20%,transparent); }
-[data-theme="forest"] .badge { border-radius: 50px; }
-[data-theme="forest"] .room-hdr { border-bottom: none; padding-bottom: 4px; }
-
-/* ── dot previews ── */
-.th-dot[data-t="cafe"]    { background: radial-gradient(circle at 35% 35%, #d4854a 30%, #0f0c09); }
-.th-dot[data-t="library"] { background: radial-gradient(circle at 35% 35%, #c8943a 30%, #0a0806); }
-.th-dot[data-t="y2k"]     { background: radial-gradient(circle at 35% 35%, #00e5ff 30%, #08080f); }
-.th-dot[data-t="forest"]  { background: radial-gradient(circle at 35% 35%, #6ec86e 30%, #060d06); }
 
 /* ═══════════════════════════════════════════════════════════
    BASE
@@ -271,10 +181,11 @@ input:focus { border-color: var(--acd); box-shadow: 0 0 0 3px color-mix(in srgb,
 .th-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.2s; flex-shrink: 0; }
 .th-dot:hover { transform: scale(1.2); }
 .th-dot.on { border-color: var(--tx); transform: scale(1.2); }
-.th-dot[data-t="cafe"]    { background: radial-gradient(circle at 35% 35%, #d4854a 30%, #0f0c09); }
-.th-dot[data-t="library"] { background: radial-gradient(circle at 35% 35%, #c8943a 30%, #0a0806); }
-.th-dot[data-t="y2k"]     { background: radial-gradient(circle at 35% 35%, #00e5ff 30%, #08080f); }
-.th-dot[data-t="forest"]  { background: radial-gradient(circle at 35% 35%, #6ec86e 30%, #060d06); }
+.th-dot[data-t="cabin"]      { background: radial-gradient(circle at 35% 35%, #e8a44a 30%, #1c1510); }
+.th-dot[data-t="aquarium"]   { background: radial-gradient(circle at 35% 35%, #00d4ff 30%, #030d18); }
+.th-dot[data-t="cottage"]    { background: radial-gradient(circle at 35% 35%, #8b5e3c 30%, #faf5ee); }
+.th-dot[data-t="observatory"]{ background: radial-gradient(circle at 35% 35%, #c8a84a 30%, #080a14); }
+.th-dot[data-t="mushroom"]   { background: radial-gradient(circle at 35% 35%, #d4a830 30%, #100e08); }
 .theme-strip-label { font-size: 10px; color: var(--txd); letter-spacing: 0.08em; text-transform: uppercase; }
 
 /* ═══════════════════════════════════════════════════════════
@@ -503,33 +414,9 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
 
 /* friend notification bubble */
 .notif-dot { width: 7px; height: 7px; background: var(--danger); border-radius: 50%; display: inline-block; margin-left: 4px; vertical-align: middle; }
-
-/* ── CHANGELOG ── */
-.cl-link { display: block; text-align: center; margin-top: 10px; font-size: 11px; color: var(--txd); cursor: pointer; letter-spacing: 0.05em; transition: color 0.2s; text-decoration: none; }
-.cl-link:hover { color: var(--txm); }
-.cl-link .cl-ver { color: var(--acd); font-weight: 500; margin-right: 4px; }
-
-.cl-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; }
-.cl-overlay.open { display: flex; }
-.cl-modal { background: var(--sf); border: 1px solid var(--br); border-radius: var(--rl); width: 100%; max-width: 440px; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 24px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05); animation: fadeUp 0.3s ease; }
-.cl-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 16px; border-bottom: 1px solid var(--br); flex-shrink: 0; }
-.cl-title { font-family: var(--font-h); font-size: 18px; font-weight: 600; color: var(--acg); }
-.cl-close { background: none; border: none; cursor: pointer; color: var(--txd); font-size: 20px; line-height: 1; padding: 2px 6px; border-radius: 6px; transition: all 0.15s; }
-.cl-close:hover { color: var(--tx); background: var(--sf2); }
-.cl-body { overflow-y: auto; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 20px; }
-.cl-entry { display: flex; flex-direction: column; gap: 8px; }
-.cl-entry-header { display: flex; align-items: baseline; gap: 10px; }
-.cl-version { font-family: monospace; font-size: 12px; font-weight: 700; color: var(--ac); background: color-mix(in srgb,var(--ac) 12%,transparent); border: 1px solid color-mix(in srgb,var(--ac) 20%,transparent); border-radius: 6px; padding: 2px 8px; flex-shrink: 0; }
-.cl-date { font-size: 11px; color: var(--txd); }
-.cl-items { display: flex; flex-direction: column; gap: 5px; }
-.cl-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--tx); line-height: 1.5; }
-.cl-tag { flex-shrink: 0; font-size: 10px; font-weight: 600; letter-spacing: 0.06em; padding: 2px 6px; border-radius: 4px; margin-top: 2px; text-transform: uppercase; }
-.cl-tag.new  { background: color-mix(in srgb,var(--ok) 15%,transparent); color: var(--ok); border: 1px solid color-mix(in srgb,var(--ok) 25%,transparent); }
-.cl-tag.fix  { background: color-mix(in srgb,#6a9fd8 15%,transparent); color: #6a9fd8; border: 1px solid color-mix(in srgb,#6a9fd8 25%,transparent); }
-.cl-tag.impr { background: color-mix(in srgb,var(--ac) 12%,transparent); color: var(--acd); border: 1px solid color-mix(in srgb,var(--ac) 20%,transparent); }
 </style>
 </head>
-<body data-theme="cafe">
+<body data-theme="cabin">
 
 <div class="glow glow-1"></div>
 <div class="glow glow-2"></div>
@@ -549,10 +436,11 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
     <div class="auth-card">
       <div class="theme-strip">
         <span class="theme-strip-label">Theme:</span>
-        <div class="th-dot on" data-t="cafe"    title="Café"    onclick="setTheme('cafe',this)"></div>
-        <div class="th-dot"    data-t="library" title="Library" onclick="setTheme('library',this)"></div>
-        <div class="th-dot"    data-t="y2k"     title="Y2K"     onclick="setTheme('y2k',this)"></div>
-        <div class="th-dot"    data-t="forest"  title="Forest"  onclick="setTheme('forest',this)"></div>
+        <div class="th-dot on" data-t="cabin"       title="Cabin"       onclick="setTheme('cabin',this)"></div>
+        <div class="th-dot"    data-t="aquarium"    title="Aquarium"    onclick="setTheme('aquarium',this)"></div>
+        <div class="th-dot"    data-t="cottage"     title="Cottagecore" onclick="setTheme('cottage',this)"></div>
+        <div class="th-dot"    data-t="observatory" title="Observatory" onclick="setTheme('observatory',this)"></div>
+        <div class="th-dot"    data-t="mushroom"    title="Mushroom Grove" onclick="setTheme('mushroom',this)"></div>
       </div>
 
       <div id="auth-login-form">
@@ -579,71 +467,6 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
         <div class="err" id="reg-err"></div>
       </div>
     </div>
-    <span class="cl-link" onclick="document.getElementById('cl-overlay').classList.add('open')">
-      <span class="cl-ver">v2.0</span>what's new
-    </span>
-  </div>
-</div>
-
-<!-- ════════════════════════ CHANGELOG MODAL ════════════════════════ -->
-<div class="cl-overlay" id="cl-overlay" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="cl-modal">
-    <div class="cl-header">
-      <div class="cl-title">🪵 Changelog</div>
-      <button class="cl-close" onclick="document.getElementById('cl-overlay').classList.remove('open')">✕</button>
-    </div>
-    <div class="cl-body">
-
-      <div class="cl-entry">
-        <div class="cl-entry-header">
-          <span class="cl-version">v2.0</span>
-          <span class="cl-date">March 2026</span>
-        </div>
-        <div class="cl-items">
-          <div class="cl-item"><span class="cl-tag new">new</span>Accounts — register, log in, stay signed in across sessions</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Permanent rooms — your room belongs to you forever, one per account</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Friends system — add friends, accept requests, see who's online and where</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Visit rooms — jump into a friend's room directly from the Friends tab</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Room decoration — wallpapers, mood text, draggable sticker widgets (candles, plants, clocks, notes…)</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>5 fully redesigned themes — Cabin, Aquarium, Cottagecore, Observatory, Mushroom Grove</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Floating particles per theme — sparkles, bubbles, flowers, stars</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Search now works — proxied through server, CORS issue gone for good</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Volume no longer resets to 100% when tracks skip</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Auto-skip now has a fallback timer so tracks always advance</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Reconnecting no longer creates a ghost room — you always rejoin the same room</div>
-        </div>
-      </div>
-
-      <div class="cl-entry">
-        <div class="cl-entry-header">
-          <span class="cl-version">v1.1</span>
-          <span class="cl-date">March 2026</span>
-        </div>
-        <div class="cl-items">
-          <div class="cl-item"><span class="cl-tag new">new</span>5 colour themes with font + palette changes</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Auto-reconnect with exponential backoff</div>
-          <div class="cl-item"><span class="cl-tag fix">fix</span>Server heartbeat kills ghost WebSocket connections</div>
-          <div class="cl-item"><span class="cl-tag impr">impr</span>Track ended deduplication — multiple clients no longer double-skip</div>
-          <div class="cl-item"><span class="cl-tag impr">impr</span>Queue remove correctly adjusts current index</div>
-        </div>
-      </div>
-
-      <div class="cl-entry">
-        <div class="cl-entry-header">
-          <span class="cl-version">v1.0</span>
-          <span class="cl-date">March 2026</span>
-        </div>
-        <div class="cl-items">
-          <div class="cl-item"><span class="cl-tag new">new</span>Real-time rooms via WebSocket — create or join with a code</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>SoundCloud playback synced across all listeners</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Shared queue — everyone can add and remove songs</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Shareable room links with ?room= URL parameter</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Live chat with avatars and timestamps</div>
-          <div class="cl-item"><span class="cl-tag new">new</span>Seek, skip, volume, progress bar controls</div>
-        </div>
-      </div>
-
-    </div>
   </div>
 </div>
 
@@ -668,10 +491,11 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
 
     <div class="room-theme-row">
       <span class="theme-strip-label">Theme:</span>
-      <div class="th-dot" data-t="cafe"    onclick="setTheme('cafe',this)"></div>
-      <div class="th-dot" data-t="library" onclick="setTheme('library',this)"></div>
-      <div class="th-dot" data-t="y2k"     onclick="setTheme('y2k',this)"></div>
-      <div class="th-dot" data-t="forest"  onclick="setTheme('forest',this)"></div>
+      <div class="th-dot" data-t="cabin"       onclick="setTheme('cabin',this)"></div>
+      <div class="th-dot" data-t="aquarium"    onclick="setTheme('aquarium',this)"></div>
+      <div class="th-dot" data-t="cottage"     onclick="setTheme('cottage',this)"></div>
+      <div class="th-dot" data-t="observatory" onclick="setTheme('observatory',this)"></div>
+      <div class="th-dot" data-t="mushroom"    onclick="setTheme('mushroom',this)"></div>
     </div>
 
     <div class="sec-label">Listening now</div>
@@ -834,261 +658,49 @@ input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 12p
 <script src="https://w.soundcloud.com/player/api.js"></script>
 <script>
 // ═══════════════════════════════════════════════
-//  ANIMATED BACKGROUNDS — one real renderer per theme
+//  PARTICLES
 // ═══════════════════════════════════════════════
-let particleCanvas, particleCtx, particleRAF;
+const THEME_PARTICLES = {
+  cabin:       { char: '✦', color: '#e8a44a', count: 18, speed: 0.3 },
+  aquarium:    { char: '◉', color: '#00d4ff', count: 22, speed: 0.2 },
+  cottage:     { char: '❀', color: '#8b5e3c', count: 16, speed: 0.25 },
+  observatory: { char: '★', color: '#c8a84a', count: 30, speed: 0.15 },
+  mushroom:    { char: '✦', color: '#d4a830', count: 14, speed: 0.2 }
+};
+let particles = [], particleCtx, particleCanvas, particleRAF;
 
 function initParticles(theme) {
   particleCanvas = document.getElementById('particles');
-  particleCtx    = particleCanvas.getContext('2d');
+  particleCtx = particleCanvas.getContext('2d');
   cancelAnimationFrame(particleRAF);
   particleCanvas.width  = window.innerWidth;
   particleCanvas.height = window.innerHeight;
-  particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-
-  const W = particleCanvas.width, H = particleCanvas.height;
-
-  if (theme === 'cafe') {
-    // Rainy window: vertical rain streaks + window reflection glow + steam wisps
-    const drops = Array.from({length: 120}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      len: 8 + Math.random() * 20,
-      speed: 4 + Math.random() * 8,
-      opacity: 0.08 + Math.random() * 0.18,
-      width: 0.5 + Math.random() * 0.8
-    }));
-    const steam = Array.from({length: 6}, (_, i) => ({
-      x: W * 0.3 + i * 40, y: H * 0.85,
-      t: Math.random() * Math.PI * 2,
-      speed: 0.008 + Math.random() * 0.006
-    }));
-    function tickCafe() {
-      particleCtx.clearRect(0, 0, W, H);
-      // rain
-      drops.forEach(d => {
-        particleCtx.beginPath();
-        particleCtx.strokeStyle = `rgba(180,160,130,${d.opacity})`;
-        particleCtx.lineWidth = d.width;
-        particleCtx.moveTo(d.x, d.y);
-        particleCtx.lineTo(d.x - d.len * 0.15, d.y + d.len);
-        particleCtx.stroke();
-        d.y += d.speed; d.x -= d.speed * 0.15;
-        if (d.y > H + 30) { d.y = -30; d.x = Math.random() * W; }
-      });
-      // window glow at bottom — warm café interior reflected
-      const grad = particleCtx.createRadialGradient(W * 0.5, H, 0, W * 0.5, H, H * 0.4);
-      grad.addColorStop(0, 'rgba(212,133,74,0.06)');
-      grad.addColorStop(1, 'transparent');
-      particleCtx.fillStyle = grad;
-      particleCtx.fillRect(0, 0, W, H);
-      // steam wisps rising from cup
-      steam.forEach(s => {
-        s.t += s.speed;
-        const sx = s.x + Math.sin(s.t) * 12;
-        const sy = s.y - (s.t * 15 % H * 0.3);
-        const age = (s.t * 15 % (H * 0.3)) / (H * 0.3);
-        particleCtx.beginPath();
-        particleCtx.arc(sx, sy, 3 + age * 6, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(200,170,130,${0.06 * (1 - age)})`;
-        particleCtx.fill();
-      });
-      particleRAF = requestAnimationFrame(tickCafe);
-    }
-    tickCafe();
-
-  } else if (theme === 'library') {
-    // Candlelit dust motes: slow drifting particles, warm flicker, candle glow pools
-    const motes = Array.from({length: 55}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      r: 0.5 + Math.random() * 1.5,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: -0.1 - Math.random() * 0.2,
-      opacity: 0.1 + Math.random() * 0.35,
-      t: Math.random() * 1000
-    }));
-    const candles = [
-      { x: W * 0.12, y: H * 0.92, flicker: 0 },
-      { x: W * 0.88, y: H * 0.88, flicker: 0.5 },
-    ];
-    let ft = 0;
-    function tickLibrary() {
-      particleCtx.clearRect(0, 0, W, H);
-      ft += 0.04;
-      // candle glow pools on floor
-      candles.forEach(c => {
-        c.flicker += 0.08;
-        const r = 160 + Math.sin(c.flicker * 3.1) * 15;
-        const g = particleCtx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r);
-        g.addColorStop(0, `rgba(200,148,58,${0.12 + Math.sin(c.flicker) * 0.03})`);
-        g.addColorStop(0.4, 'rgba(160,100,30,0.04)');
-        g.addColorStop(1, 'transparent');
-        particleCtx.fillStyle = g;
-        particleCtx.fillRect(0, 0, W, H);
-        // candle flame
-        const fx = c.x + Math.sin(c.flicker * 2.3) * 2;
-        particleCtx.beginPath();
-        particleCtx.ellipse(fx, c.y - 8, 3, 6, 0, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(255,200,80,${0.7 + Math.sin(c.flicker) * 0.2})`;
-        particleCtx.fill();
-      });
-      // floating dust motes
-      motes.forEach(m => {
-        m.t += 0.6;
-        m.x += m.vx + Math.sin(m.t * 0.01) * 0.15;
-        m.y += m.vy;
-        if (m.y < -5) { m.y = H + 5; m.x = Math.random() * W; }
-        const pulse = 0.6 + 0.4 * Math.sin(m.t * 0.04);
-        particleCtx.beginPath();
-        particleCtx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(220,180,100,${m.opacity * pulse})`;
-        particleCtx.fill();
-      });
-      particleRAF = requestAnimationFrame(tickLibrary);
-    }
-    tickLibrary();
-
-  } else if (theme === 'y2k') {
-    // CRT glow: scanline drift, pixel grid, neon cursor trails, matrix-ish columns
-    const cols = Array.from({length: Math.floor(W / 20)}, (_, i) => ({
-      x: i * 20 + 10,
-      y: Math.random() * H,
-      speed: 0.5 + Math.random() * 2,
-      chars: '01アイウエオABCDEF◆◇'.split(''),
-      char: '0',
-      opacity: 0.05 + Math.random() * 0.12,
-      len: 3 + Math.floor(Math.random() * 8)
-    }));
-    const sparks = Array.from({length: 20}, () => ({
-      x: Math.random() * W, y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 3, vy: (Math.random() - 0.5) * 3,
-      life: Math.random(), decay: 0.008 + Math.random() * 0.015
-    }));
-    let yt = 0;
-    function tickY2K() {
-      yt++;
-      particleCtx.fillStyle = 'rgba(8,8,15,0.15)';
-      particleCtx.fillRect(0, 0, W, H);
-      // matrix columns
-      if (yt % 3 === 0) {
-        cols.forEach(c => {
-          c.y += c.speed;
-          if (c.y > H) c.y = -20;
-          c.char = c.chars[Math.floor(Math.random() * c.chars.length)];
-          particleCtx.font = '11px monospace';
-          particleCtx.fillStyle = `rgba(0,229,255,${c.opacity})`;
-          particleCtx.fillText(c.char, c.x, c.y);
-          // trail fade
-          for (let i = 1; i < c.len; i++) {
-            particleCtx.fillStyle = `rgba(0,229,255,${c.opacity * (1 - i / c.len) * 0.5})`;
-            particleCtx.fillText(c.char, c.x, c.y - i * 14);
-          }
-        });
-      }
-      // neon sparks
-      sparks.forEach(s => {
-        s.x += s.vx; s.y += s.vy; s.life -= s.decay;
-        if (s.life <= 0) {
-          s.x = Math.random() * W; s.y = Math.random() * H;
-          s.vx = (Math.random() - 0.5) * 3; s.vy = (Math.random() - 0.5) * 3;
-          s.life = 0.8 + Math.random() * 0.2;
-        }
-        particleCtx.beginPath();
-        particleCtx.arc(s.x, s.y, 1.5, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(0,229,255,${s.life * 0.6})`;
-        particleCtx.fill();
-      });
-      // corner CRT vignette
-      const vg = particleCtx.createRadialGradient(W/2, H/2, H*0.3, W/2, H/2, H*0.8);
-      vg.addColorStop(0, 'transparent');
-      vg.addColorStop(1, 'rgba(0,0,8,0.5)');
-      particleCtx.fillStyle = vg;
-      particleCtx.fillRect(0, 0, W, H);
-      particleRAF = requestAnimationFrame(tickY2K);
-    }
-    tickY2K();
-
-  } else if (theme === 'forest') {
-    // Enchanted dusk: fireflies, drifting fog wisps, rising spores
-    const fireflies = Array.from({length: 28}, () => ({
-      x: Math.random() * W, y: H * 0.3 + Math.random() * H * 0.6,
-      tx: Math.random() * W, ty: H * 0.3 + Math.random() * H * 0.6,
-      speed: 0.004 + Math.random() * 0.008,
-      t: Math.random() * 1000,
-      glowT: Math.random() * Math.PI * 2,
-      glowSpeed: 0.02 + Math.random() * 0.04,
-      r: 1.5 + Math.random() * 2
-    }));
-    const fog = Array.from({length: 5}, (_, i) => ({
-      x: (i / 4) * W * 1.4 - W * 0.2,
-      y: H * 0.5 + i * 40,
-      r: 150 + Math.random() * 200,
-      speed: 0.15 + Math.random() * 0.1,
-      opacity: 0.04 + Math.random() * 0.04
-    }));
-    const spores = Array.from({length: 30}, () => ({
-      x: Math.random() * W, y: H + Math.random() * 50,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -(0.3 + Math.random() * 0.5),
-      r: 1 + Math.random() * 2,
-      opacity: 0.15 + Math.random() * 0.3,
-      t: Math.random() * 100
-    }));
-    function tickForest() {
-      particleCtx.clearRect(0, 0, W, H);
-      // deep canopy glow gradient at top
-      const sky = particleCtx.createLinearGradient(0, 0, 0, H * 0.5);
-      sky.addColorStop(0, 'rgba(20,60,20,0.08)');
-      sky.addColorStop(1, 'transparent');
-      particleCtx.fillStyle = sky;
-      particleCtx.fillRect(0, 0, W, H);
-      // fog wisps
-      fog.forEach(f => {
-        f.x += f.speed;
-        if (f.x > W + f.r) f.x = -f.r;
-        const fg = particleCtx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r);
-        fg.addColorStop(0, `rgba(80,160,80,${f.opacity})`);
-        fg.addColorStop(1, 'transparent');
-        particleCtx.fillStyle = fg;
-        particleCtx.fillRect(0, 0, W, H);
-      });
-      // rising spores
-      spores.forEach(s => {
-        s.t++;
-        s.x += s.vx + Math.sin(s.t * 0.05) * 0.3;
-        s.y += s.vy;
-        if (s.y < -10) { s.y = H + 10; s.x = Math.random() * W; }
-        particleCtx.beginPath();
-        particleCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(160,232,140,${s.opacity})`;
-        particleCtx.fill();
-      });
-      // fireflies
-      fireflies.forEach(f => {
-        f.glowT += f.glowSpeed;
-        const glow = 0.5 + 0.5 * Math.sin(f.glowT);
-        // lerp toward target
-        f.x += (f.tx - f.x) * f.speed;
-        f.y += (f.ty - f.y) * f.speed;
-        if (Math.abs(f.tx - f.x) < 5 && Math.abs(f.ty - f.y) < 5) {
-          f.tx = Math.random() * W;
-          f.ty = H * 0.25 + Math.random() * H * 0.65;
-        }
-        if (glow > 0.3) {
-          const g = particleCtx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 6);
-          g.addColorStop(0, `rgba(180,255,100,${glow * 0.35})`);
-          g.addColorStop(1, 'transparent');
-          particleCtx.fillStyle = g;
-          particleCtx.fillRect(f.x - f.r*6, f.y - f.r*6, f.r*12, f.r*12);
-        }
-        particleCtx.beginPath();
-        particleCtx.arc(f.x, f.y, f.r * glow, 0, Math.PI * 2);
-        particleCtx.fillStyle = `rgba(200,255,120,${glow * 0.9})`;
-        particleCtx.fill();
-      });
-      particleRAF = requestAnimationFrame(tickForest);
-    }
-    tickForest();
+  const cfg = THEME_PARTICLES[theme] || THEME_PARTICLES.cabin;
+  particles = Array.from({length: cfg.count}, () => ({
+    x: Math.random() * particleCanvas.width,
+    y: Math.random() * particleCanvas.height,
+    size: 8 + Math.random() * 10,
+    speed: cfg.speed * (0.5 + Math.random()),
+    opacity: 0.1 + Math.random() * 0.4,
+    drift: (Math.random() - 0.5) * 0.3,
+    char: cfg.char, color: cfg.color
+  }));
+  function tick() {
+    particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+    particles.forEach(p => {
+      particleCtx.font = `${p.size}px serif`;
+      particleCtx.fillStyle = p.color;
+      particleCtx.globalAlpha = p.opacity;
+      particleCtx.fillText(p.char, p.x, p.y);
+      p.y -= p.speed; p.x += p.drift;
+      if (p.y < -20) { p.y = particleCanvas.height + 20; p.x = Math.random() * particleCanvas.width; }
+      if (p.x < -20) p.x = particleCanvas.width + 20;
+      if (p.x > particleCanvas.width + 20) p.x = -20;
+    });
+    particleCtx.globalAlpha = 1;
+    particleRAF = requestAnimationFrame(tick);
   }
+  tick();
 }
 window.addEventListener('resize', () => {
   if (particleCanvas) { particleCanvas.width = window.innerWidth; particleCanvas.height = window.innerHeight; }
@@ -1097,7 +709,7 @@ window.addEventListener('resize', () => {
 // ═══════════════════════════════════════════════
 //  THEME
 // ═══════════════════════════════════════════════
-const THEME_NAMES = { cafe:'☕ Café', library:'📚 Library', y2k:'📺 Y2K', forest:'🌲 Forest' };
+const THEME_NAMES = { cabin:'🪵 Cabin', aquarium:'🌊 Aquarium', cottage:'🌸 Cottagecore', observatory:'🌙 Observatory', mushroom:'🍄 Mushroom Grove' };
 function setTheme(name, el) {
   document.body.setAttribute('data-theme', name);
   localStorage.setItem('hearth-theme', name);
@@ -1105,10 +717,7 @@ function setTheme(name, el) {
   initParticles(name);
 }
 (function initTheme() {
-  const saved = localStorage.getItem('hearth-theme');
-  // migrate old theme names to new ones
-  const migrate = { cabin:'cafe', aquarium:'forest', cottage:'library', observatory:'y2k', mushroom:'forest' };
-  const t = (saved && THEME_NAMES[saved]) ? saved : (migrate[saved] || 'cafe');
+  const t = localStorage.getItem('hearth-theme') || 'cabin';
   document.body.setAttribute('data-theme', t);
   document.querySelectorAll('.th-dot').forEach(d => d.classList.toggle('on', d.dataset.t === t));
   initParticles(t);
@@ -1250,11 +859,11 @@ function onMsg(msg) {
       S.myWsId=msg.yourWsId; S.myColor=msg.yourColor; S.myEmoji=msg.yourEmoji;
       S.roomCode=msg.roomCode; S.members=msg.members; S.queue=msg.queue;
       S.decoration=msg.decoration||{};
-      document.getElementById('room-code-el').textContent=msg.roomCode;
       applyDecoration(S.decoration);
       renderMembers(); renderQueue();
       applyPlayback(msg.playback,true);
       if(!S.scWidget) setupSC();
+      // Show decor button only for room owner
       document.getElementById('decor-toggle-btn').style.display = msg.owner===S.username ? 'block' : 'none';
       break;
 
@@ -1655,7 +1264,34 @@ window.addEventListener('load', async ()=>{
   }
 });
 
+// Update room-code-el after snapshot
+const _origOnMsg=onMsg;
+window.addEventListener('load',()=>{
+  // patch to also set room code display
+  const orig=onMsg;
+});
+
+// Watch for room snapshot to set code display
+function onRoomCode(code) {
+  document.getElementById('room-code-el').textContent=code;
+}
+// Override applyDecoration to also set code
+const _applyDec=applyDecoration;
+function applyDecoration(dec){
+  _applyDec(dec);
+}
+
 window.addEventListener('beforeunload',e=>{if(S.roomCode){e.preventDefault();e.returnValue='';}});
+</script>
+<script>
+// ── patch to set room code after snapshot (deferred) ──
+const _origOnMsg2 = onMsg;
+function onMsg(msg) {
+  _origOnMsg2(msg);
+  if(msg.type==='room_snapshot') {
+    document.getElementById('room-code-el').textContent = msg.roomCode;
+  }
+}
 </script>
 </body>
 </html>
